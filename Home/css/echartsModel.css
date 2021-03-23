@@ -1,0 +1,24 @@
+.layer01-panel,.layer02-panel{
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding: 0px;
+    margin: 10px 0px;
+    border-width: 0px;
+    cursor: default;
+}
+.layer01-panel-label ,.layer02-panel-label{
+    width: 95%;
+    height: 15%;
+    color: #fec602;
+    margin: 0px auto;
+    padding-top: 5px;
+}
+.layer01-panel-chart,.layer02-panel-chart{
+    width: 95%;
+    height: 250px;
+    padding: 0px;
+    margin: 0px auto;
+    margin-top: 5px;
+    border-width: 0px;
+}

@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/element-ui.css">
+    <link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="./css/echartsModel.css">
+    <script src="./js/echartModel.js"></script>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/vue.js"></script>
+    <script src="./js/element-ui.js"></script>
+    <script src="./js/GS.js"></script>
+    <script src="./js/echarts.min.js"></script>
+    <script src="./js/edata.js"></script>
+    <script src="./js/Sortable.min.js"></script>
+    <script src="./js/vuedraggable.umd.min.js"></script>
+    <script src="./js/config.js"></script>
+    <link rel="stylesheet" href="./css/font.css">
+</head>
+
+<body>
+    <div class="main" id="app">
+        <!-- 右上角告警 -->
+        <div class="al" id="al">
+            <span class="altips">机房报警</span>
+        </div>
+        <img class="alimg" src="./img/al.png" alt="">
+
+        <!-- 右下角漫游 -->
+        <div class="roam" @click="goSet">
+            <span class="roamtips">系统设置</span>
+        </div>
+        <div class="roamicon">
+            <span class="iconfont icon-ren"></span>
+        </div>
+
+        <!-- 左下角按钮 -->
+        <div class="home" id="home"> </div>
+
+        <!-- 菜单项 -->
+        <div class="menuItem">
+            <div class="item item0">
+                <span class="iconfont icon-jifang"></span>
+                <span class="tips">运营总览</span>
+            </div>
+            <div class="item item1">
+                <span class="iconfont icon-jifang"></span>
+                <span class="tips">拓扑管理</span>
+            </div>
+            <div class="item item2">
+                <span class="iconfont icon-jifang1"></span>
+                <span class="tips">资产管理</span>
+            </div>
+            <div class="item item3">
+                <span class="iconfont icon-jiankong"></span>
+                <span class="tips">资源管理</span>
+            </div>
+            <div class="item item4">
+                <span class="iconfont icon-yunwei"></span>
+                <span class="tips">能效管理</span>
+            </div>
+            <div class="item item5">
+                <span class="el-icon-s-tools"></span>
+                <span class="tips">运维管理</span>
+            </div>
+            <div class="item item6">
+                <span class="el-icon-s-cooperation"></span>
+                <span class="tips">安防管理</span>
+            </div>
+        </div>
+
+        <!-- 弧形 -->
+        <div class="firstLevelMenu" id="firstLevelMenu">
+            <div class="fmc"></div>
+        </div>
+
+
+
+        <!-- 运营总览 -->
+
+
+        <div class="leftBox_yyzl">
+            <div class="hd">
+                <span class="tit">运营总览</span>
+                <span></span>
+            </div>
+            <div class="ct">
+
+
+                <div class="dragI">
+                    <div class="s_t">
+                        楼宇结构
+                    </div>
+                    <div class="ly_1" v-for="(item,i) in buildingList" :key="i">
+                        <div style="color: #fff;">{{item.buildName}}>></div>
+                        <el-radio v-model="buildingFloor" @click.native.prevent="radioClick(item.index+'-'+items.index)"
+                            v-for="(items,i) in item.floors" :key="i" :label="item.index+'-'+items.index">
+                            {{items.floorName}}</el-radio>
+                    </div>
+                </div>
+                <div class="dragI">
+                    <div class="s_t">
+                        楼宇环境
+                    </div>
+                    <div class="ly_1" >
+                        <el-checkbox-group v-model="environment"  >
+                            <el-checkbox v-for="(items,i) in environmentList" :key="i" :label="items" style="width: 120px;margin: 5px 0px;">
+                                {{items}}</el-checkbox>
+                        </el-checkbox-group>
+                       
+                    </div>
+                </div>
+                <div class="dragI">
+                    <div class="s_t">
+                        系统分类
+                    </div>
+                    <div class="ly_1">
+                        <el-radio v-model="selectClass" v-for="(items,i) in classList" :key="i" :label="items"
+                            @click.native.prevent=ckClass(items)>
+                            {{items}}</el-radio>
+                    </div>
+                </div>
+                <div class="dragI">
+                    <div class="s_t">
+                        设备分类
+                    </div>
+                    <div class="ly_1">
+                        <el-checkbox-group v-model="selectDevice" @change="handleCheckedCitiesChange">
+                            <el-checkbox v-for="(items,i) in deviceList" :key="i" :label="items">
+                                {{items}}</el-checkbox>
+                        </el-checkbox-group>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+
+        </div>
+        <div class="rightBox_yyzl">
+            <div id="layer01" class="layer01-panel">
+                <div class="layer01-panel-label">
+                    <span>资源利用率</span>
+                </div>
+                <div id="layer01_right_chart" class="layer01-panel-chart"></div>
+            </div>
+            <div id="layer02" class="layer02-panel">
+                <div class="layer02-panel-label">
+                    <span>资源统计</span>
+                </div>
+                <div id="layer02_right_chart" class="layer02-panel-chart"></div>
+            </div>
+        </div>
+        <!-- 运营总览end -->
+
+        <!-- 资源管理 -->
+
+        <div class="leftBox_zygl">
+            <div class="hd">
+                <span class="tit">资源管理</span>
+                <span></span>
+            </div>
+            <div class="ct">
+                 
+                <div class="dragI">
+                    <div class="s_t">
+                        楼宇结构
+                    </div>
+                    <div class="ly_1" v-for="(item,i) in buildingList" :key="i">
+                        <div style="color: #fff;">{{item.buildName}}>></div>
+                        <el-radio v-model="buildingFloor" @click.native.prevent="radioClickResources(item.index+'-'+items.index)"
+                            v-for="(items,i) in item.floors" :key="i" :label="item.index+'-'+items.index">
+                            {{items.floorName}}</el-radio>
+                    </div>
+                </div>
+                <div class="dragI">
+                    <div class="s_t">
+                        资源管理
+                    </div>
+                    <div class="ly_1">
+                        <el-checkbox-group v-model="selectResources"  @change="setResources('show')">
+                            <el-checkbox v-for="(items,i) in resourcesList" :key="i" :label="items" style="width: 120px;margin: 5px 0px;">
+                                {{items}}</el-checkbox>
+                        </el-checkbox-group>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 资源管理end -->
+
+        <!-- 能效管理 -->
+        <div class="leftBox_nxgl">
+            <div class="hd">
+                <span class="tit">能效管理</span>
+                <span></span>
+            </div>
+            <div class="ct">
+                
+                <div class="dragI">
+                    <div class="s_t">
+                        楼宇结构
+                    </div>
+                    <div class="ly_1" v-for="(item,i) in buildingList" :key="i">
+                        <div style="color: #fff;">{{item.buildName}}>></div>
+                        <el-radio v-model="buildingFloor" @click.native.prevent="radioClick(item.index+'-'+items.index)"
+                            v-for="(items,i) in item.floors" :key="i" :label="item.index+'-'+items.index">
+                            {{items.floorName}}</el-radio>
+                    </div>
+                </div>
+                <div class="dragI">
+                    <div class="s_t">
+                        能效管理
+                    </div>
+                    <div class="ly_1">
+                        <el-checkbox-group v-model="selectEfficiency" >
+                            <el-checkbox v-for="(items,i) in efficiencyList" :key="i" :label="items" style="width: 120px;margin: 5px 0px;">
+                                {{items}}</el-checkbox>
+                        </el-checkbox-group>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <!-- 能效管理end -->
+
+
+
+
+
+
+        <div class="leftBox_ywgl">
+
+            <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+                <el-tab-pane label="维保" name="维保">
+                    <div class="ct">
+                        <div class="dragI" >
+                            <div class="s_t">
+                                楼宇结构
+                            </div>
+                            <div class="ly_1" v-for="(item,i) in buildingList" :key="i">
+                                <div style="color: #fff;">{{item.buildName}}>></div>
+                                <el-radio v-model="buildingFloor" @click.native.prevent="radioClick(item.index+'-'+items.index)"
+                                    v-for="(items,i) in item.floors" :key="i" :label="item.index+'-'+items.index">
+                                    {{items.floorName}}</el-radio>
+                            </div>
+                        </div>
+                        <div class="dragI" >
+                            <div class="s_t">
+                                维保管理
+                            </div>
+                            <div class="ly_1"  >
+                                <el-checkbox-group v-model="selectWbgl" >
+                                    <el-checkbox v-for="(items,i) in wbglList" :key="i" :label="items" style="width: 120px;margin: 5px 0px;">
+                                        {{items}}</el-checkbox>
+                                </el-checkbox-group>
+                            </div>
+                        </div>
+
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane label="虚拟巡检" name="虚拟巡检">
+                    <div class="ct">
+                        <div class="dragI" >
+                            <div class="s_t">
+                                楼宇结构
+                            </div>
+                            <div class="ly_1" v-for="(item,i) in buildingList" :key="i">
+                                <div style="color: #fff;">{{item.buildName}}>></div>
+                                <el-radio v-model="buildingFloor" @click.native.prevent="radioClick(item.index+'-'+items.index)"
+                                    v-for="(items,i) in item.floors" :key="i" :label="item.index+'-'+items.index">
+                                    {{items.floorName}}</el-radio>
+                            </div>
+                        </div>
+                        <div class="dragI" >
+                            <div class="s_t">
+                                虚拟巡检
+
+                               <span v-if="xjStatus=='待命中'" class="addBtn" @click="handleXj"><i class="el-icon-plus"></i>增加巡检</span>
+                               
+                               <span v-if="xjStatus=='开始增加巡检'" class="addBtn" @click="ExCircuit">取消</span>
+                               <span v-if="xjStatus=='开始增加巡检'" class="addBtn" @click="ExCircuit">保存</span>
+                            </div>
+                            <div class="ly_1">
+                                <ul class="xj_ul">
+                                    <li>
+                                        <span>
+                                            1.巡检路线1
+                                        </span>
+                                        <span>
+                                            <el-button v-if="xjStatus=='待命中'" type="primary" size="mini">开始巡检</el-button>
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span>
+                                            2.巡检路线2
+                                        </span>
+                                        <span>
+                                            <el-button v-if="xjStatus=='待命中'" type="primary" size="mini">开始巡检</el-button>
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span>
+                                            3.巡检路线3
+                                        </span>
+                                        <span>
+                                            <el-button v-if="xjStatus=='待命中'" type="primary" size="mini">开始巡检</el-button>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane label="数字化路由" name="数字化路由">
+                    <div class="ct">
+                        <div class="dragI" >
+                            <div class="s_t">
+                                维保
+                            </div>
+                            <div class="ly_1" v-for="(item,i) in buildingList" :key="i">
+                                <div style="color: #fff;">{{item.buildName}}>></div>
+                                <el-radio v-model="buildingFloor" @click.native.prevent="radioClick(item.index+'-'+items.index)"
+                                    v-for="(items,i) in item.floors" :key="i" :label="item.index+'-'+items.index">
+                                    {{items.floorName}}</el-radio>
+                            </div>
+                        </div>
+                        <div class="dragI" >
+                            <div class="s_t">
+                                维保管理
+                            </div>
+                            <div class="ly_1"  >
+                                <el-checkbox-group v-model="selectWbgl" >
+                                    <el-checkbox v-for="(items,i) in wbglList" :key="i" :label="items" style="width: 120px;margin: 5px 0px;">
+                                        {{items}}</el-checkbox>
+                                </el-checkbox-group>
+                            </div>
+                        </div>
+
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane label="变更管理" name="变更管理">
+                    <div class="ct">
+                        <div class="dragI" >
+                            <div class="s_t">
+                                维保
+                            </div>
+                            <div class="ly_1" v-for="(item,i) in buildingList" :key="i">
+                                <div style="color: #fff;">{{item.buildName}}>></div>
+                                <el-radio v-model="buildingFloor" @click.native.prevent="radioClick(item.index+'-'+items.index)"
+                                    v-for="(items,i) in item.floors" :key="i" :label="item.index+'-'+items.index">
+                                    {{items.floorName}}</el-radio>
+                            </div>
+                        </div>
+                        <div class="dragI" >
+                            <div class="s_t">
+                                维保管理
+                            </div>
+                            <div class="ly_1" >
+                                <el-checkbox-group v-model="selectWbgl" >
+                                    <el-checkbox v-for="(items,i) in wbglList" :key="i" :label="items" style="width: 120px;margin: 5px 0px;">
+                                        {{items}}</el-checkbox>
+                                </el-checkbox-group>
+                            </div>
+                        </div>
+
+                    </div>
+                </el-tab-pane>
+                <!-- <el-tab-pane v-for="(item,i) in wbgl_left" :key="i" :label="item.title" :name="item.title">
+                    <div class="ct">
+                        <div class="dragI" v-for="(items,i) in item.content" :key="i" v-if="items.show">
+
+                            <div class="s_t">
+                                {{items.name}}
+                            </div>
+                            
+                            <div class="ly_1" v-if="items.type=='radio' && items.children==undefined">
+
+                                <el-radio-group v-model="selectVal_wbgl[i].value">
+                                    <el-radio v-for="(itemss,i) in items.checkList.data" :key="i" :label="itemss.key"
+                                        :style="items.checkList.style">
+                                        {{itemss.label}}</el-radio>
+                                </el-radio-group>
+                            </div>
+
+
+
+                            
+                            <div class="ly_1" v-if="items.type=='checkbox' && items.children==undefined">
+
+                                <el-checkbox-group v-model="selectVal_wbgl[i].value">
+                                    <el-checkbox v-for="(itemss,i) in items.checkList.data" :key="i" :label="itemss.key"
+                                        :style="items.checkList.style">
+                                        {{itemss.label}}</el-checkbox>
+                                </el-checkbox-group>
+                            </div>
+
+                            <div class="ly_1" v-if="items.type=='html' && items.children==undefined"
+                                v-html="items.html.data">
+
+                            </div>
+                        </div>
+                    </div>
+                </el-tab-pane> -->
+
+            </el-tabs>
+
+
+        </div>
+
+
+        <el-dialog
+  title="增加巡检"
+  :visible.sync="addXjVisible"
+  width="30%"
+  :close-on-click-modal="false"
+  >
+  <el-form label-position="right" label-width="80px" :model="xjForm">
+    <el-form-item label="名称">
+      <el-input v-model="xjForm.name"></el-input>
+    </el-form-item>
+ 
+  </el-form>
+  <span slot="footer" class="dialog-footer">
+    <el-button size="mini" @click="addXjVisible = false">取 消</el-button>
+    <el-button size="mini" type="primary" @click="startCircuit">确 定</el-button>
+  </span>
+</el-dialog>
+
+
+
+
+        <!-- 告警列表 -->
+        <div class="alarmBox">
+            <div class="hd">
+                <span>消息中心</span>
+                <span class="el-icon-close" @click="closeAlarmList()"></span>
+            </div>
+            <div class="icon">
+                <div><img src="./img/消息.png" alt=""><span>消息通知</span></div>
+                <div><img src="./img/严重告警.png" alt=""><span>严重告警</span></div>
+                <div><img src="./img/紧急告警.png" alt=""><span>紧急告警</span></div>
+
+                <div></div>
+                <div></div>
+            </div>
+            <div class="searchBox">
+                <div class="ig">
+                    <el-select class="s1" v-model="leavel" placeholder="请选择" size="mini">
+                        <el-option label="全部" value="all"></el-option>
+                        <el-option label="一般" value="一般"></el-option>
+                        <el-option label="严重" value="严重"></el-option>
+                        <el-option label="紧急" value="紧急"></el-option>
+                    </el-select>
+                    <el-input class="inc" placeholder="请输入内容" v-model="sc" size="mini">
+                        <el-button slot="append" icon="el-icon-search"></el-button>
+                    </el-input>
+                </div>
+            </div>
+            <div class="list">
+                <ul>
+                    <li v-for="(item,index) in warnList" @click=goToPos(item)>
+                        <img src="./img/紧急告警.png" alt="">
+                        <div class="ct">
+                            <div class="rows"><span>{{item.monitor_name}}</span><span>{{item.start_time}}</span></div>
+                            <div class="rows"><span>{{item.alarm_cause}}</span><span>一楼</span></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+       
+ 
+
+      
+    </script>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                xjForm:{name:''},
+                xjStatus:'待命中',
+                addXjVisible:false,
+                leavel: 'all',
+                sc: "",
+                buildingFloor: '',
+                buildingList: [],
+                environment:[],
+                environmentList:["全景观看","昼夜节律光"],
+                classList: [],
+                selectClass: '',
+                deviceList: [],
+                selectDevice: [],
+
+                resourcesList:["空间","承重","电力","冷量","网络"],
+                selectResources:[],
+
+                efficiencyList:["电力图","温度云图"],
+                selectEfficiency:[],
+
+                selectWbgl:[],
+                wbglList:["维保云图",'到期时间','剩余时间','巡检次数'],
+
+                warnList:[],
+                selectVal:[],
+                activeName: '维保',
+                radios: '',
+                enabled: false,
+                
+                selectVal_nxgl: [{
+                    name: '楼宇结构',
+                    value: ''
+                }, {
+                    name: '资源管理',
+                    value: ''
+                }],
+                selectVal_wbgl: [{
+                    name: '楼宇结构',
+                    value: ''
+                }, {
+                    name: '维保管理',
+                    value: ''
+                }],
+                radio_sbxx: [],
+                radio_lyhj: [],
+                radio_ly: ['1'],
+                tableData: [],
+                left: [{
+                        var: 'lyhj',
+                        name: '楼宇环境',
+                        type: 'checkbox',
+                        show: true,
+                        checkList: {
+                            style: {},
+                            data: [{
+                                key: '全景观看',
+                                label: '全景观看'
+                            }, {
+                                key: '昼夜节律光',
+                                label: '昼夜节律光'
+                            }]
+                        }
+                    },
+
+
+                    // {
+                    //     var: 'cssj',
+                    //     name: '测试数据',
+                    //     type: 'html',
+                    //     show: true,
+                    //     checkList: {},
+                    //     html: {
+                    //         style: {
+
+                    //         },
+                    //         data: `<link rel="stylesheet" href="./cs.css"><div class="cs">47777</div>`
+                    //     }
+                    // },
+                ],
+             
+                
+                wbgl_left: [{
+                        title: '维保',
+                        content: [{
+                                var: 'lyjg',
+                                name: '楼宇结构',
+                                type: 'radio',
+                                show: true,
+                                checkList: {
+                                    style: {
+                                        "width": "80px",
+                                        "margin-bottom": "10px",
+                                        "margin-right": "10px"
+                                    },
+                                    data: [{
+                                        key: '1楼',
+                                        label: '1楼'
+                                    }, {
+                                        key: '2楼',
+                                        label: '2楼'
+                                    }, {
+                                        key: '3楼',
+                                        label: '3楼'
+                                    }]
+                                }
+                            },
+                            {
+                                var: 'wbgl',
+                                name: '维保管理',
+                                type: 'radio',
+                                show: true,
+                                checkList: {
+                                    style: {
+                                        "width": "120px",
+                                        "margin-bottom": "10px",
+                                        "margin-right": "10px"
+                                    },
+                                    data: [{
+                                        key: '维保云图',
+                                        label: '维保云图'
+                                    }, {
+                                        key: '到期时间',
+                                        label: '到期时间'
+                                    }, {
+                                        key: '剩余时间',
+                                        label: '剩余时间'
+                                    }, {
+                                        key: '巡检次数',
+                                        label: '巡检次数'
+                                    }]
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        title: '虚拟巡检',
+                        content: [{
+                                var: 'lyjg',
+                                name: '楼宇结构',
+                                type: 'radio',
+                                show: true,
+                                checkList: {
+                                    style: {
+                                        "width": "80px",
+                                        "margin-bottom": "10px",
+                                        "margin-right": "10px"
+                                    },
+                                    data: [{
+                                        key: '1楼',
+                                        label: '1楼'
+                                    }, {
+                                        key: '2楼',
+                                        label: '2楼'
+                                    }, {
+                                        key: '3楼',
+                                        label: '3楼'
+                                    }]
+                                }
+                            },
+                            {
+                                var: 'xnxj',
+                                name: '虚拟巡检',
+                                type: 'radio',
+                                show: true,
+                                checkList: {
+                                    style: {
+                                        "width": "120px",
+                                        "margin-bottom": "10px",
+                                        "margin-right": "10px"
+                                    },
+                                    data: [{
+                                        key: '上午巡检路线',
+                                        label: '上午巡检路线'
+                                    }, {
+                                        key: '下午巡检路线',
+                                        label: '下午巡检路线'
+                                    }]
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        title: '数字化路由',
+                        content: [{
+                                var: 'lylx',
+                                name: '路由类型',
+                                type: 'radio',
+                                show: true,
+                                checkList: {
+                                    style: {
+                                        "width": "80px",
+                                        "margin-bottom": "10px",
+                                        "margin-right": "10px"
+                                    },
+                                    data: [{
+                                        key: '强电',
+                                        label: '强电'
+                                    }, {
+                                        key: '弱电',
+                                        label: '弱电'
+                                    }, {
+                                        key: '管路',
+                                        label: '管路'
+                                    }]
+                                }
+                            },
+                            {
+                                var: 'xnxj',
+                                name: 'test',
+                                type: 'radio',
+                                show: true,
+                                checkList: {
+                                    style: {
+                                        "width": "120px",
+                                        "margin-bottom": "10px",
+                                        "margin-right": "10px"
+                                    },
+                                    data: [{
+                                        key: '测试',
+                                        label: '测试'
+                                    }, {
+                                        key: '测试2',
+                                        label: '测试2'
+                                    }]
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            created() {
+                this.getBuildingList()
+                this.getSystemClassification()
+            
+            },
+            mounted() {
+                let that =this
+                renderLayer01Right("all")
+                renderLayer02Right("all", "all")
+                // show_Box_yyzl()
+
+                $('.closeBtn').on('click', function () {
+                    DeleteConnect()
+                    $(".alarmBox").css({
+                        display: "none"
+                    });
+                })
+
+
+                // alert(localStorage.getItem('s'))
+                $("#home").click(function () {
+                    that.buildingFloor=""
+                    that.selectClass = ""
+                    that.selectDevice=[]
+                    that.selectEfficiency=[]
+                    that.selectResources=[]
+                    that.sendCommd('hide')
+                    hide_Box_yyzl()
+
+                    hide_Box_nxgl()
+                    hide_Box_zygl()
+                    hide_Box_ywgl()
+                    downHome()
+                    upFirst()
+
+                })
+                $("#al").click(function () {
+                    that.GetWarnningInfo()
+                    $(".alarmBox").css({
+                        display: "block",
+                        transition: "right 1s",
+                        right: "0px",
+                    });
+                })
+                $(".al").on('mouseover', e => {
+                    $(".alimg").css({
+                        transition: "right 0.8s",
+                        right: "10px",
+                    });
+                    $(".altips").css({
+                        transition: "right 0.8s",
+                        right: "0px",
+                    });
+                })
+                $(".al").on('mouseout', e => {
+                    $(".alimg").css({
+                        transition: "right 0.8s",
+                        right: "-100px",
+                    });
+                    $(".altips").css({
+                        transition: "right 0.8s",
+                        right: "-100px",
+                    });
+                })
+
+                $(".roam").on('mouseover', e => {
+                    $(".roamtips").css({
+                        transition: "right 0.8s",
+                        right: "0px",
+                    });
+                    $(".roamicon").css({
+                        transition: "right 0.8s",
+                        right: "10px",
+                    });
+                })
+                $(".roam").on('mouseout', e => {
+                    $(".roamtips").css({
+                        transition: "right 0.8s",
+                        right: "-100px",
+                    });
+                    $(".roamicon").css({
+                        transition: "right 0.8s",
+                        right: "-100px",
+                    });
+                })
+
+
+                $('.item0').on('click', function (params) {
+                    $(".item").css({
+                        transform: 'scale(0)',
+                        transition: "left 1.2s,top 1.2s,transform 1.2s",
+                        webkitTransition: "left 1.2s,top 1.2s",
+                        oTransition: "left 1.2s,top 1.2s",
+                        msTransition: "left 1.2s,top 1.2s",
+                        mozTransition: "left 1.2s,top 1.2s",
+                        left: "-100px",
+                        top: "100px"
+                    });
+                    downFirst()
+                    upHome()
+                    show_Box_yyzl()
+
+                })
+                $('.item1').on('click', function (params) {
+                    $(".item").css({
+                        transform: 'scale(0)',
+                        transition: "left 1.2s,top 1.2s,transform 1.2s",
+                        webkitTransition: "left 1.2s,top 1.2s",
+                        oTransition: "left 1.2s,top 1.2s",
+                        msTransition: "left 1.2s,top 1.2s",
+                        mozTransition: "left 1.2s,top 1.2s",
+                        left: "-100px",
+                        top: "100px"
+                    });
+                    downFirst()
+                    upHome()
+                    window.location.href="./tpgl.html"
+                })
+                $('.item2').on('click', function (params) {
+                    $(".item").css({
+                        transform: 'scale(0)',
+                        transition: "left 1.2s,top 1.2s,transform 1.2s",
+                        webkitTransition: "left 1.2s,top 1.2s",
+                        oTransition: "left 1.2s,top 1.2s",
+                        msTransition: "left 1.2s,top 1.2s",
+                        mozTransition: "left 1.2s,top 1.2s",
+                        left: "-100px",
+                        top: "100px"
+                    });
+                    downFirst()
+                    upHome()
+                 
+                    window.location.href="./zygl.html"
+                   
+
+                })
+                $('.item3').on('click', function (params) {
+                    $(".item").css({
+                        transform: 'scale(0)',
+                        transition: "left 1.2s,top 1.2s,transform 1.2s",
+                        webkitTransition: "left 1.2s,top 1.2s",
+                        oTransition: "left 1.2s,top 1.2s",
+                        msTransition: "left 1.2s,top 1.2s",
+                        mozTransition: "left 1.2s,top 1.2s",
+                        left: "-100px",
+                        top: "100px"
+                    });
+                    downFirst()
+                    upHome()
+                    show_Box_zygl()
+                })
+                $('.item4').on('click', function (params) {
+                    $(".item").css({
+                        transform: 'scale(0)',
+                        transition: "left 1.2s,top 1.2s,transform 1.2s",
+                        webkitTransition: "left 1.2s,top 1.2s",
+                        oTransition: "left 1.2s,top 1.2s",
+                        msTransition: "left 1.2s,top 1.2s",
+                        mozTransition: "left 1.2s,top 1.2s",
+                        left: "-100px",
+                        top: "100px"
+                    });
+                    downFirst()
+                    upHome()
+                    show_Box_nxgl()
+                })
+                $('.item5').on('click', function (params) {
+                    $(".item").css({
+                        transform: 'scale(0)',
+                        transition: "left 1.2s,top 1.2s,transform 1.2s",
+                        webkitTransition: "left 1.2s,top 1.2s",
+                        oTransition: "left 1.2s,top 1.2s",
+                        msTransition: "left 1.2s,top 1.2s",
+                        mozTransition: "left 1.2s,top 1.2s",
+                        left: "-100px",
+                        top: "100px"
+                    });
+                    downFirst()
+                    upHome()
+                    show_Box_ywgl()
+                })
+            },
+            methods: {
+                handleXj(){
+                    this.addXjVisible=true
+                },
+                startCircuit(){
+                    this.xjStatus="开始增加巡检"
+                    this.addXjVisible=false
+                    httpRequest(baseUrl + '?Method=StartDrawCircuit', this.xjForm).then(
+                            res => {
+                                console.log(res, 7777);
+                                this.addXjVisible=false
+                            })
+                    // 
+
+                   
+                },
+                ExCircuit(){
+                    this.xjStatus='待命中'
+                    // this.addXjVisible=false
+                },
+                goSet(){
+                    window.location.href='./setting.html'
+                },
+                closeAlarmList() {
+                    $(".alarmBox").css({
+
+                        transition: "right 1s",
+                        right: "-370px",
+                    });
+                },
+                
+                radioClick(e) {
+                    if (e == this.buildingFloor) {
+                        this.buildingFloor = ""
+                        this.sendCommd('hide')
+                        renderLayer01Right("all")
+
+                    } else {
+                        this.buildingFloor = e;
+                        // this.setEquipmentState()
+                        
+                        this.sendCommd('show')
+                        console.log(e,this.selectClass);
+                        renderLayer01Right(e,this.selectClass)
+                    }
+
+                   
+                    // console.log(this.buildingFloor);
+
+
+                },
+                radioClickResources(e){
+                    if (e == this.buildingFloor) {
+                        this.buildingFloor = ""
+                        this.setResources('hide')
+
+                    } else {
+                        this.buildingFloor = e;
+                        // this.setEquipmentState()
+                        this.setResources('show')
+                    }
+                },
+                ckClass(e) {
+                    if (e == this.selectClass) {
+                        this.selectClass = ""
+                        this.selectDevice=[]
+                        this.deviceList=[]
+                         this.sendCommd('hide')
+
+                    } else {
+                        this.selectDevice=[]
+                        this.selectClass = e;
+                        this.getDeviceClass(e)
+                        // this.sendCommd('show')
+                    }
+                },
+                handleCheckedCitiesChange() {
+                    this.sendCommd('show')
+                },
+
+                sendCommd(e) {
+                    let sarr
+                    let str =JSON.parse(JSON.stringify(this.selectDevice))
+                    
+                    str.unshift(this.selectClass)
+                    if (this.buildingFloor == "") {
+                        let params = {
+                            project_name: '',
+                            object_name: '',
+                            bind_name: '',
+                            monitor_time: '',
+                            cmmd: e,
+                            buildIndex: -1,
+                            floorIndex: -1,
+                            tag: str,
+                            state: ''
+                        }
+                        httpRequest(baseUrl + '?Method=GetStateInfor', params).then(
+                            res => {
+                                console.log(res, 7777);
+                            })
+
+                    } else {
+                        sarr = this.buildingFloor.split('-')
+
+                        let params = {
+                            project_name: '',
+                            object_name: '',
+                            bind_name: '',
+                            monitor_time: '',
+                            cmmd: e,
+                            buildIndex: Number(sarr[0]),
+                            floorIndex: Number(sarr[1]),
+                            tag: str,
+                            state: ''
+                        }
+                        httpRequest(baseUrl + '?Method=GetStateInfor', params).then(
+                            res => {
+                                console.log(res, 7777);
+                            })
+                    }
+
+
+
+                },
+                setResources(e){
+                    let sarr
+                    let str =JSON.parse(JSON.stringify(this.selectDevice))
+                    
+                    str.unshift(this.selectClass)
+                    if (this.buildingFloor == "") {
+                        let params = {
+                            project_name: '',
+                            object_name: '',
+                            bind_name: '',
+                            monitor_time: '',
+                            cmmd: e,
+                            buildIndex: -1,
+                            floorIndex: -1,
+                            tag: this.selectResources,
+                            state: ''
+                        }
+                        httpRequest(baseUrl + '?Method=CheckCabinet', params).then(
+                            res => {
+                                console.log(res, 7777);
+                            })
+
+                    } else {
+                        sarr = this.buildingFloor.split('-')
+
+                        let params = {
+                            project_name: '',
+                            object_name: '',
+                            bind_name: '',
+                            monitor_time: '',
+                            cmmd: e,
+                            buildIndex: Number(sarr[0]),
+                            floorIndex: Number(sarr[1]),
+                            tag: this.selectResources,
+                            state: ''
+                        }
+                        httpRequest(baseUrl + '?Method=CheckCabinet', params).then(
+                            res => {
+                                console.log(res, 7777);
+                            })
+                    }
+                },
+                GetWarnningInfo(){
+                    let that=this
+                    $.get(baseUrl + "?Method=GetWarnningInfo", function (result) {
+                        if (result.code == 200) {
+                            that.warnList= result.data
+                        }
+                    })
+                },
+                getBuildingList() {
+                    let that = this
+
+                    $.get(baseUrl + "?Method=GetBuildsInfor", function (result) {
+                        if (result.code == 200) {
+                            let r= result.data
+                            // let r = [{
+                            //     "buildName": "大楼",
+                            //     "index": 0,
+                            //     "floors": [{
+                            //         "floorName": "wallFloor0",
+                            //         "index": 0
+                            //     }, {
+                            //         "floorName": "wallFloor1",
+                            //         "index": 1
+                            //     }, {
+                            //         "floorName": "wallFloor2",
+                            //         "index": 2
+                            //     }]
+                            // },
+                            // {
+                            //     "buildName": "大楼1",
+                            //     "index": 0,
+                            //     "floors": [{
+                            //         "floorName": "wallFloor0",
+                            //         "index": 0
+                            //     }, {
+                            //         "floorName": "wallFloor1",
+                            //         "index": 1
+                            //     }, {
+                            //         "floorName": "wallFloor2",
+                            //         "index": 2
+                            //     }]
+                            // }]
+           
+                            let temp = []
+
+                            for (let u = 0; u < r.length; u++) {
+                                for (let i = 0; i < BUILDING_CONFIG.length; i++) {
+                                    //匹配楼
+                                    if (r[u].buildName == BUILDING_CONFIG[i].buildName) {
+                                        var as = r[u].floors
+                                        for (let k = 0; k < as.length; k++) {
+                                            //匹配楼层
+                                            if (BUILDING_CONFIG[i].floors.indexOf(as[k]
+                                                .floorName) == -1) {
+                                                as.splice(k, 1)
+                                                k--
+                                            }
+
+                                        }
+
+
+                                        temp.push(r[u])
+                                    }
+
+
+                                }
+
+
+
+
+                            }
+                            // console.log(temp);
+                            that.buildingList = temp
+                        } else {
+                            console.log(result);
+                            alert('出错了')
+                        }
+
+                    });
+
+                },
+                getSystemClassification() {
+                    let that = this
+                    $.get(baseUrl + '?Method=GetEquipmentRootLabels', function (result) {
+                        if (result.code == 200) {
+                            let r= result.data
+                            for (let i = 0; i < r.length; i++) {
+                                if(SYS_CLASS_CONFIG.indexOf(r[i])==-1){
+                                    r.splice(i,1)
+                                    i--
+                                }
+                                
+                            }
+                            that.classList = r
+                        } else {
+                            console.log(result);
+                            alert('出错了')
+                        }
+
+                    });
+
+                },
+                getDeviceClass(e) {
+                    let that = this
+                    $.get(baseUrl + '?Method=GetEquipmentSecondLabel&ID=' + e, function (result) {
+                        if (result.code == 200) {
+                            console.log(result.data);
+                            that.deviceList = result.data
+                        } else {
+                            console.log(result);
+                            alert('出错了')
+                        }
+
+                    });
+
+                },
+                handleClick(tab, event) {
+                    console.log(tab, event);
+                },
+                radioChange(params) {
+             
+                    renderLayer01Right(f)
+                    renderLayer02Right(c, f)
+
+
+
+                },
+                test1() {
+                    console.log(this.selectVal);
+                    console.log(this.left);
+                },
+                getTableData(params) {
+                    this.tableData = params
+                },
+                goToPos(params) {
+                    httpRequest(baseUrl + '?Method=LocateEquipmentBindId', {"id":params.ip+'/'+params.monitor_name}).then(
+            res => {
+                 
+            })
+                },
+                radio_ly_change() {
+                    this.radio_ly.shift()
+                }
+            }
+        })
+
+        //设置表格数据
+        function setAlarmTable(params) {
+            /**
+                 * 参数示例如下
+                 * [
+                {
+                "project_name":"V1栋二楼数据仓库",
+                "bind_name":"设备5",
+                "monitor_name":"设备5",
+                "e_name":"电压",
+                "c_name":"电压",
+                "monitor_time ":"2021-1-11 17:16:56",
+                "val":"20",
+                "val_rename":"20",
+                "val_type":"0",
+                "category_name":"",
+                "unit":"度",
+                "start_time":"2021-1-11 17:16:56",
+                "last_time":null,
+                "counter":10,
+                "status":0,
+                "ip":"",
+                "alarm_type":"1",
+                "alarm_level":"1",
+                "alarm_cause":"温度过高",
+                "alarm_descr":"温度过高，监控值为50度",
+                "alarm_value":62
+            }]
+                 * 
+                */
+            app.getTableData(params)
+        }
+
+        function GetValue_POS(a) {
+
+        }
+    </script>
+
+
+</body>
+
+</html>

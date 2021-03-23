@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./css/element-ui.css">
+  <script src="./js/config.js"></script>
+  <script src="./js/jquery.min.js"></script>
+  <!-- <script src="//webapi.amap.com/ui/1.0/main.js"></script> -->
+  <link rel="stylesheet" href="./css/jquery-ui.css" />
+  <link rel="stylesheet" href="./tpgl.css">
+  <script src="./js/jquery-ui.min.js"></script>
+  <script src="./js/layer/layer.js"></script>
+  <script src="./js/go.js"></script>
+  <script src="./js/flowDesinger.js"></script>
+
+
+
+  <script src="./js/vue.js"></script>
+  <script src="./js/element-ui.js"></script>
+</head>
+
+<body>
+  <div id="sample">
+    <div class="top">
+      <div class="elrow">
+        <span>拓扑管理</span>
+        <span class="el-icon-close" id="goback" @click="goback"></span>
+      </div>
+    </div>
+    <span id="SaveButton">保存</span>
+
+
+
+
+
+    <div style="width: 100%; display: flex; justify-content: center; height: calc(100% - 40px);">
+
+      <span
+        style="display: inline-block; vertical-align: top; padding:0px 5px 5px 5px; border: 1px solid #66b89f; box-sizing: border-box;">
+        <div id="accordion">
+          <h4>类别一</h4>
+          <div>
+            <div id="myPaletteSmall" style="width: 140px; height: 360px"></div>
+          </div>
+          <h4>类别二</h4>
+          <div>
+            <div id="myPaletteTall" style="width: 140px; height: 360px"></div>
+          </div>
+          <h4>类别三</h4>
+          <div>
+            <div id="myPaletteWide" style="width: 140px; height: 360px"></div>
+          </div>
+
+        </div>
+      </span>
+      <!-- <div id="myPaletteDiv"
+          style="width: 105px; margin-right: 2px; background-color: whitesmoke; border: solid 1px black"></div> -->
+
+      <div id="myDiagramDiv" style="flex-grow: 1; height: 100%; border: 1px solid #66b89f;
+        box-sizing: border-box;">
+
+      </div>
+      <!-- <div class="info">
+        <ul>
+
+          <div v-if="selectE.name_zh!= undefined">
+            <li>
+              <span>ID : </span><span>{{selectE.id}}</span>
+            </li>
+            <li>
+              <span>设备中文名称 : </span><span>{{selectE.name_zh}}</span>
+            </li>
+            <li>
+              <span>设备英文名称 : </span><span>{{selectE.name_en}}</span>
+            </li>
+            <li>
+              <span>标签 : </span><span>{{selectE.tag}}</span>
+            </li>
+            <li>
+              <span>通道 : </span><span>{{selectE.channel}}</span>
+            </li>
+            <li v-for="( im , index ) in  infoList" :key="index">
+              <span>{{im.name_zh}} : </span><span>{{im.value}}</span>
+            </li>
+          </div>
+        </ul>
+      </div> -->
+    </div>
+
+    <div v-show="false">
+      <div>
+
+        <button onclick="load()">Load</button>
+        以JSON格式保存的图表模型：
+      </div>
+      <textarea id="mySavedModel" style="width:100%;height:300px">
+                  { "class": "go.GraphLinksModel",
+    "linkFromPortIdProperty": "fromPort",
+    "linkToPortIdProperty": "toPort",
+    "modelData": {"position":"-160.49999999999994 -51.5"},
+    "nodeDataArray": [],
+    "linkDataArray": []}
+       </textarea>
+    </div>
+
+
+    <el-dialog title="设备列表" :visible.sync="equListPage" :close-on-click-modal="false" width="80%" center>
+      <div class="table-content">
+        <el-tree :data="zclist" :props="defaultProps" @node-click="handleNodeClick">
+          <span class="custom-tree-node" slot-scope="{ node, data }">
+            <span class="ct">
+              <span v-if="data.isLeaf" class="el-icon-present"></span>
+              <span v-else class="el-icon-location-outline"></span>{{ node.label }}
+            </span>
+          </span>
+        </el-tree>
+        <!--   
+          <el-table ref="multipleTable" :data="equListData" highlight-current-row border
+            @current-change="handleCurrentChange" style="width: 100%">
+            <el-table-column prop="name_en" label="英文名称">
+            </el-table-column>
+            <el-table-column prop="name_zh" label="中文名称">
+            </el-table-column>
+            <el-table-column prop="channel" label="通讯通道">
+            </el-table-column>
+            <el-table-column prop="tag" label="设备标签">
+            </el-table-column>
+          </el-table>
+          <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+            layout="total,sizes,prev, pager, next" :current-page="currentPage" :page-sizes="[10, 20, 30, 40]"
+            :page-size="pageSize" :total="total">
+          </el-pagination> -->
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button>取 消</el-button>
+        <el-button type="primary" @click="binding">确 定</el-button>
+      </span>
+    </el-dialog>
+  </div>
+  </template>
+  <style>
+
+  </style>
+  <script>
+ 
+    var app = new Vue({
+      el: '#sample',
+      data: {
+        zclist: [],
+        defaultProps: {
+          children: 'Children',
+          label: 'name'
+        },
+        currentRow: {},
+        node: {},
+        equListPage: false,
+        selectE: {},
+        infoList: '',
+        searchForm: {
+          name: ''
+        }
+
+      },
+      created() {
+        let that = this
+        this.getZcListByPos()
+        
+
+      },
+      mounted() {
+        let that = this
+        window.showEquList = this.showEquList
+
+        init()
+        $.get(baseUrl + '?Method=GetTopologicalMapInfo').then(
+          res => {
+            let s
+            s = JSON.parse(res.data)
+             
+            reload(s)
+          })
+        $('#SaveButton').click(() => {
+          console.log(1111);
+          let jsons = save()
+          
+          httpRequest(baseUrl + '?Method=SetTopologicalMapInfo', jsons).then(
+            res => {
+
+            })
+
+
+        })
+
+      },
+
+      methods: {
+        goback(){
+          window.location.href = "./index.html"
+        },
+        saveData() {
+
+          let jsons = save()
+          let params = {
+            name: 'sss',
+            data: jsons
+          }
+          console.log(jsons);
+
+        },
+        showEquList(e) {
+          console.log(e);
+          this.node = e
+          this.equListPage = true
+        },
+
+        handleNodeClick(e) {
+          console.log(e, 33);
+          if (e.isLeaf && e.key) {
+            this.currentRow = e
+          }
+        },
+        binding() {
+          console.log(this.currentRow);
+
+          if (this.currentRow.key) {
+            updateNodeData(this.node, this.currentRow)
+            this.equListPage = false
+            this.currentRow = {}
+
+          } else {
+            this.$message({
+              type: 'error',
+              message: '请选择设备！'
+            })
+            return
+          }
+
+
+        },
+        getZcListByPos() {
+          let that = this
+          $.get(baseUrl + "?Method=GetEquipementListDependStruct", {}, function (result) {
+            if (result.code == 200) {
+              that.zclist = result.data.Children
+            } else {
+              console.log(result);
+              alert('出错了')
+            }
+
+          });
+        },
+
+
+      }
+    })
+  </script>
+
+</body>
+
+</html>

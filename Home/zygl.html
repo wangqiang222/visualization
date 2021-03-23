@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/element-ui.css">
+    <link rel="stylesheet" href="./zcgl.css">
+
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/vue.js"></script>
+    <script src="./js/element-ui.js"></script>
+    <script src="./js/config.js"></script>
+</head>
+
+<body>
+    <div></div>
+    <div id="app">
+
+        <div class="mainSetting">
+            <div class="hd"><span>资产管理</span> <span class="el-icon-close"  @click="goback"></span></div>
+            <div class="treeBox">
+                <div class="rowBox">
+
+                    <div class="clx">
+                        <div class="separator">
+                            <span :class="ckFlag=='pos'?'separator-active':''" @click="getZcListByPos">位置</span>/
+                            <span :class="ckFlag=='tag'?'separator-active':''" @click="getZcListByTag">标签</span>
+                          </div>
+                        <el-tree :data="zclist" :props="defaultProps" @node-click="handleNodeClick">
+                            <span class="custom-tree-node" slot-scope="{ node, data }">
+                                <span class="ct">
+                          
+                                    <span v-if="data.isLeaf" class="el-icon-present"></span>
+                                    <span v-else class="el-icon-location-outline"></span>
+                                     {{ node.label }}
+                                </span>
+                            </span>
+                        </el-tree>
+
+                    </div>
+
+                    <div class="d-body">
+                        <div class="c" v-if="formData.ModelID!=''">
+                            <div class="btn-322">
+                                <el-button v-if="!isedit" type="primary" size="mini" @click="changeState" >编 辑</el-button>
+                                 
+                            </div>
+                            <el-form v-if="!isedit" :label-position="'right'" label-width="140px" :model="formData">
+                                <el-form-item label="模型ID：">
+                                    <span style="color:#fff;">{{formData.ModelID}}</span>
+                                </el-form-item>
+                                <el-form-item label="模型名称：">
+                                    <span style="color:#fff;">{{formData.ModelName}}</span>
+                                </el-form-item>
+                                <el-form-item label="绑定设备：">
+                                    <span style="color:#fff;">{{formData.BindId}}</span>
+                               
+                                </el-form-item>
+                                <el-form-item label="二维码：">
+                                    <el-image :src="imgSrc"></el-image>
+
+                                </el-form-item>
+
+
+                                <!-- <el-form-item v-if="formData.ModelID!=''">
+                                    <el-button type="primary" size="mini" @click="handleSave">保 存
+                                    </el-button>
+
+                                </el-form-item> -->
+                            </el-form>
+
+                            <el-form v-if="isedit" :label-position="'right'" label-width="140px" :model="formData">
+                                <el-form-item label="模型ID：">
+                                                    <span style="color:#fff;">{{formData.ModelID}}</span>
+                                                </el-form-item>
+                                                <el-form-item label="模型名称：">
+                                                    <span style="color:#fff;">{{formData.ModelName}}</span>
+                                                </el-form-item>
+                                                <el-form-item label="绑定设备：">
+                                                    <el-input size="mini" v-model="formData.BindId"
+                                                        placeholder="IP/设备名称">
+                                                    </el-input>
+                                                </el-form-item>
+                                                <el-form-item label="请求地址：">
+                                                    <el-input size="mini" v-model="formData.HttpURL"></el-input>
+                                                </el-form-item>
+                                                <el-form-item label="请求类型：">
+                                                    <el-select size="mini" value-key v-model="formData.RequestType"
+                                                        placeholder="请选择">
+                                                        <el-option label="GET" :value="0">
+                                                        </el-option>
+                                                        <el-option label="POST" :value="1">
+                                                        </el-option>
+                                                    </el-select>
+                                                </el-form-item>
+                                                <el-form-item label="请求参数：">
+                                                    <div style="text-align: right; border-bottom:1px solid #fff">
+                                                        <el-button type="primary" size="mini" @click="pushHttpData">增加参数
+                                                        </el-button>
+                                                    </div>
+                                                    <div class="igroup" v-for="(item,index) in formData.ModelInfoData">
+
+                                                        <el-input size="mini" v-model="item.key" style="width:200px"
+                                                            placeholder="请输入参数名称">
+                                                        </el-input>：
+                                                        <el-input size="mini" v-model="item.Value" placeholder="请输入参数值">
+                                                        </el-input>
+                                                        <el-button type="danger" size="mini" icon="el-icon-delete"
+                                                            circle @click="deleteHttpData(index)"></el-button>
+                                                    </div>
+                                                </el-form-item>
+
+                                                <el-form-item label="ModelShowData：">
+                                                    <div style="text-align: right;border-bottom:1px solid #fff">
+                                                        <el-button type="primary" size="mini" @click="pushData">增加参数
+                                                        </el-button>
+                                                    </div>
+                                                    <div class="igroup" v-for="(item,index) in formData.ModelShowData">
+
+                                                        <span class="label">Title：</span>
+                                                        <el-input size="mini" v-model="item.Title"></el-input>
+                                                        <span class="label">Content：</span>
+                                                        <el-input size="mini" v-model="item.Content"></el-input>
+                                                        <el-button type="danger" size="mini" icon="el-icon-minus" circle
+                                                            @click="deleteData(index)"></el-button>
+                                                    </div>
+                                                </el-form-item>
+
+                                                <el-form-item v-if="formData.ModelID!=''">
+                                                    <el-button type="primary" size="mini"  @click="handleSave">保 存
+                                                    </el-button>
+                                                    <el-button type="success" size="mini"  @click="changeState">取 消
+                                                    </el-button>
+                                                </el-form-item>
+                            </el-form>
+                        </div>
+                        <div class="c empty" v-else>
+                            请先选择设备
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data() {
+            return {
+                isedit:false,
+                defaultProps: {
+                    children: 'Children',
+                    label: 'name'
+                },
+                ckFlag:"pos",
+                imgSrc:'./img/ewm.png',
+                formData: {
+                    BindId:'',
+                    ModelID: '',
+                    ModelName: '',
+                    HttpURL: '',
+                    RequestType:0,
+                    ModelInfoData: [],
+                    ModelShowData: []
+
+                },
+                zclist: []
+            };
+        },
+
+        created() {
+            this.setRayCast(true)
+            this.getZcListByPos()
+        },
+        methods: {
+            setRayCast(e){
+                httpRequest(baseUrl + '?Method=SetRayCast', {"value_bool":e}).then(
+                            res => {
+                                 
+                            })
+            },
+            handleSave(){
+                httpRequest(baseUrl + '?Method=SaveWarningBinding', this.formData).then(
+                            res => {
+                                 
+                            })
+            },
+            changeState(){
+                this.isedit=!this.isedit
+            },
+            pushData() {
+                this.formData.ModelShowData.push({
+                    Title: '',
+                    Content: ''
+                })
+            },
+            deleteData(i) {
+                if (this.formData.ModelShowData.length > 1) {
+                    this.formData.ModelShowData.splice(i, 1)
+                }
+            },
+            pushHttpData() {
+                this.formData.ModelInfoData.push({
+                    key: '',
+                    Value: '',
+                    Description: ''
+                })
+            },
+            deleteHttpData(i) {
+                this.formData.ModelInfoData.splice(i, 1)
+            },
+            goback(){
+                this.setRayCast(false)
+                window.location.href="./index.html"
+            },
+            handleNodeClick(e){
+               
+                if (e.isLeaf && e.key) {
+                     this.getModelInfoByKey(e.key)
+                }
+            },
+            getZcListByPos() {
+                this.ckFlag='pos'
+                let that = this
+                $.get(baseUrl + "?Method=GetEquipementListDependStruct", {}, function (result) {
+                    if (result.code == 200) {
+                        that.zclist = result.data.Children
+                    } else {
+                        console.log(result);
+                        alert('出错了')
+                    }
+
+                });
+            },
+            getZcListByTag() {
+                this.ckFlag='tag'
+                let that = this
+                $.get(baseUrl + "?Method=GetEquipementListDependLabel", {}, function (result) {
+                    if (result.code == 200) {
+                        that.zclist = result.data
+                    } else {
+                        console.log(result);
+                        alert('出错了')
+                    }
+
+                });
+            },
+            getModelInfoByKey(id){
+                let that = this
+                $.get(baseUrl + "?Method=GetEquipementDependID&ID=" + id, {}, function (result) {
+                    if (result.code == 200) {
+                        that.formData = result.data
+                    } else {
+                        console.log(result);
+                        alert('出错了')
+                    }
+
+                });
+            }
+        }
+    })
+</script>
+
+</html>

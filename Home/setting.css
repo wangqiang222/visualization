@@ -1,0 +1,472 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+
+.el-input__inner{
+    background-color: #dedede;
+}
+.mainSetting {
+    width: 100%;
+    top: 30px;
+    height:calc(100% - 60px) ;
+    background: #0c1b2e;
+    align-items: flex-start;
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+ 
+
+.mainSetting  .navigation ul{
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+.mainSetting  .navigation ul li{
+    cursor: pointer;
+    line-height: 40px;
+    margin: 0px;
+    padding: 0px;
+    color: #fff;
+    font-weight: 500;
+    text-indent: 30px;
+}
+.left {
+    width: 250px;
+    height: 100%;
+    position: sticky;
+    top: 0;
+}
+.s_line{
+    color: #fff;
+    border-bottom: 1px #c5c5c5 solid;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+.setting-main {
+    width: calc(100% - 250px);
+    height:calc(100%) ;
+    overflow: auto;
+}
+
+.setting-main .header {
+    font-size: 16px;
+    color: #fff;
+}
+
+.setting-main .header h1 {
+    cursor:pointer;
+    font-size: 16px;
+    margin: 12px 0px;
+}
+
+.setting-main .card {
+    display: flex;
+    width: 100%;
+   
+}
+.empty{
+    height: 10px;
+}
+#app{
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    /* margin-top: 30px; */
+    /* height:calc(100%) ;  */
+}
+.treeBox{
+    position: relative;
+    width: 1475px;
+    height: 100%;
+    height: 630px;
+    background-color: rgb(12, 27, 46);
+ 
+ 
+    box-sizing: border-box;
+    /* border: 1px solid #2C58A6; */
+    position: relative;
+    /* box-shadow: 0 0 10px #2C58A6; */
+}
+.clx{
+    width: 320px;
+    height: 100%;
+}
+.c{
+    margin: 10px;
+    margin-left: 0px;
+    width: 825px;
+    height: 600px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* padding: 15px; */
+    /* background-color:#072951; */
+}
+.el-form{
+    width: 98%;
+    height: 98%;
+    margin: 0 auto;
+}
+.el-tree{
+    margin: 0 auto;
+    width: 280px;
+    margin-top: 10px;
+    height: calc(100% - 20px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color:#0c1b2e!important;
+}
+#app .igroup{
+    display: flex;
+    align-items: center;
+}
+#app .igroup .label{
+    color: #fff;
+    width: 150px;
+    font-size: 12px;
+    text-align: right;
+}
+#app .el-button--mini.is-circle{
+    padding: 5px;
+    width: 24px;
+    height: 24px;
+    font-weight: bold;
+}
+.pageTitle{
+    
+    color: #fff;
+    height: 30px;
+    line-height: 30px;
+    padding:0px 20px;
+    border-bottom: 1px solid #c5c5c5;
+    background-color:rgb(12, 27, 46);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.pageTitle .l{
+    font-weight: bolder;
+}
+.pageTitle .r{
+    cursor: pointer;
+    font-size: 20px;
+}
+/* 树样式 */
+.treeBox .el-tree-node__content{
+    height: 30px;
+    line-height: 30px;
+    color: #fff;
+    font-size: 14px;
+    background-color:#0c1b2e;
+    box-sizing: border-box;
+    /* border-bottom: 1px solid #717b88; */
+}
+.el-dialog__header{
+    border-bottom: 1px solid #fff;
+}
+
+.d-body{
+    display: flex;
+    background-color: rgb(12, 27, 46);
+}
+.line{
+    /* border: 1px solid #fff; */
+    margin: 0px 5px;
+    width: 1px;
+    /* height: 100%; */
+    /* border-right: 1px solid #fff; */
+    /* border-style: double; */
+}
+ 
+
+.treeBox  .el-tree-node__content:hover{
+    background-color: rgb(25, 173, 237);
+}
+.treeBox .el-tree-node:focus>.el-tree-node__content{
+    background-color:#0c1b2e;
+}
+.treeBox .el-tree-node__label{
+    font-size: 14px;
+}
+.treeBox .el-tree-node{
+    padding-left: 0px;
+}
+.treeBox .el-tree__empty-block{
+    background-color:#0c1b2e;
+}
+.treeBox  .el-tree__empty-text{
+    color: #fff;
+}
+/* 弹框样式 */
+#app .el-dialog__wrapper{
+    left:380px;
+}
+#app .el-dialog__body{
+    height: 600px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+#app .el-dialog{
+    min-width: 1200px;
+    height:770px;
+    color: #fff;
+    background-color: rgb(12, 27, 46);
+    margin: 0px;
+    border: 2px solid #2C58A6;
+    border-left: none;
+    box-shadow: 0px 0px 10px #4788fb;
+}
+#app .el-dialog__title,#app .el-dialog__headerbtn .el-dialog__close,#app .el-dialog__body{
+    color: #fff;
+}
+#app .el-form-item__label{
+    text-align-last: justify;
+    color: #fff;
+}
+
+
+.testBox{
+   
+    margin: 0 auto;
+    width: 280px;
+    margin-top: 10px;
+    height: calc(100% - 20px);
+    /* background-color: #072951; */
+
+}
+.testBox .testMain{
+    width: 95%;
+    height: 95%;
+    margin: 0 auto;
+    padding: 15px;
+}
+.testBox .header .btn{
+    cursor: pointer;
+}
+.testBox .header {
+ padding:10px 15px ;
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ color: #fff;
+ font-weight: 700;
+ font-size: 16px;
+}
+
+.testBox .el-form-item{
+    color: #fff;
+    margin-bottom: 0px;
+}
+.testBox ul{
+    width: 98%;
+    margin: 0;
+    padding: 0;
+    margin: 0 auto;
+}
+.testBox ul  li{
+    line-height: 30px;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    display: flex;
+    list-style: none;
+}
+.testBox .first{
+    display: inline-block;
+    width: 120px;
+    text-align-last: justify;
+}   
+.testBox .secend{
+    display: inline-block;
+    width: calc(100% - 120px)
+}
+
+.t_line_box {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.t_line_box i {
+    background-color: #4788fb;
+    box-shadow: 0px 0px 10px #4788fb;
+    position: absolute;
+}
+
+.t_l_line {
+    height: 5px;
+    width: 26px;
+    left: -3px;
+    top: -3px;
+}
+
+.l_t_line {
+    width: 5px;
+    height: 24px;
+    left: -3px;
+    top: -3px;
+}
+
+.t_r_line {
+    height: 5px;
+    width: 26px;
+    right: -3px;
+    top: -3px;
+}
+
+.r_t_line {
+    width: 5px;
+    height: 24px;
+    right: -3px;
+    top: -3px;
+}
+
+.l_b_line {
+    width: 5px;
+    height: 24px;
+    left: -3px;
+    bottom: -3px;
+}
+
+.b_l_line {
+    height: 5px;
+    width: 26px;
+    left: -3px;
+    bottom: -3px;
+}
+
+.r_b_line {
+    width: 5px;
+    height: 24px;
+    right: -3px;
+    bottom: -3px;
+}
+
+.b_r_line {
+    height: 5px;
+    width: 26px;
+    right: -3px;
+    bottom: -3px;
+}
+
+
+/* 滚动条颜色 */
+scrollbar {
+    -moz-appearance: none !important;
+    background: rgb(0, 255, 0) !important;
+}
+
+/* 滚动条按钮颜色 */
+thumb,
+scrollbarbutton {
+    -moz-appearance: none !important;
+    background-color: rgb(0, 0, 255) !important;
+}
+
+/* 鼠标悬停时按钮颜色 */
+thumb:hover,
+scrollbarbutton:hover {
+    -moz-appearance: none !important;
+    background-color: rgb(255, 0, 0) !important;
+}
+
+/* 隐藏上下箭头 */
+scrollbarbutton {
+    display: none !important;
+}
+
+/* 纵向滚动条宽度 */
+scrollbar[orient="vertical"] {
+    min-width: 15px !important;
+}
+
+/*chrome*/
+
+/* 设置滚动条的样式 */
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* 滚动槽 */
+
+::-webkit-scrollbar-track {
+    background: #174379;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+/* 滚动条滑块 */
+
+::-webkit-scrollbar-thumb {
+    background: #236FCC;
+    -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
+}
+
+
+.rowBox{
+    height: calc(100% - 31px);
+    display: flex;
+}
+
+.el-tree-node{
+    position: relative;
+    padding-left: 16px;
+  }
+  .el-tree-node__children{
+    padding-left: 16px;
+  }
+  .el-tree-node :last-child:before {
+    height: 38px;
+  }
+  .el-tree>.el-tree-node:before{
+    border-left: none;
+  }
+  .el-tree>.el-tree-node:after{
+    border-top: none;
+  }
+  .el-tree-node:before,.el-tree-node:after{
+    content: "";
+    left: -4px;
+    position: absolute;
+    right: auto;
+    border-width: 1px;
+  }
+  .tree :first-child .el-tree-node:before{
+    border-left: none;
+  }
+  .el-tree-node:before {
+    border-left: 1px dashed #4386c6;
+    bottom: 0px;
+    height: 100%;
+    top: -20px;
+    width: 1px;
+  }
+  .el-tree-node:after {
+    border-top: 1px dashed #4386c6;
+    height: 20px;
+    top: 17px;
+    width: 24px;
+  }
+  .icons{
+       
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+}
+.ct{
+    display: flex;
+    align-items: center;
+}
+.navigation{
+    margin-top: 15px;
+}

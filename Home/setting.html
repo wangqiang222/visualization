@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/element-ui.css">
+    <link rel="stylesheet" href="./setting.css">
+    
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/vue.js"></script>
+    <script src="./js/element-ui.js"></script>
+    <script src="./js/config.js"></script>
+</head>
+
+<body>
+    <div></div>
+    <div id="app">
+        <div class="mainSetting">
+            <div class="left">
+                <div role="navigation" class="navigation">
+                    <ul>
+                        <li @click=openUI>导入项目</li>
+                        <li @click="gotoPoint('#jksz')" :style="{color:(selectLeft=='#jksz'?'#409eff':'#fff')}">监控设置
+                        </li>
+                        <li @click="gotoPoint('#skpz')" :style="{color:(selectLeft=='#skpz'?'#409eff':'#fff')}">Socket配置
+                        </li>
+                        <li id="goback">返回</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="setting-main">
+                <div class="empty"></div>
+                <settings-section id="jksz">
+                    <div class="header">
+                        <h1>监控设置</h1>
+                    </div>
+                    <div class="card">
+                        <div>
+                            <div class="treeBox">
+                                <div class="rowBox">
+
+                                    <div class="clx">
+                                        <el-tree :data="zclist" :props="defaultProps" @node-click="handleNodeClick">
+                                            <span class="custom-tree-node" slot-scope="{ node, data }">
+                                                <span class="ct">
+                                          
+                                                    <span v-if="data.isLeaf" class="el-icon-present"></span>
+                                                    <span v-else class="el-icon-location-outline"></span>
+                                                     {{ node.label }}
+                                                </span>
+                                            </span>
+                                        </el-tree>
+                                        
+                                    </div>
+
+                                    <div class="d-body">
+                                        <div class="c">
+                                            <el-form :label-position="'right'" label-width="140px" :model="formData">
+                                                <el-form-item label="模型ID：">
+                                                    <span style="color:#fff;">{{formData.ModelID}}</span>
+                                                </el-form-item>
+                                                <el-form-item label="模型名称：">
+                                                    <span style="color:#fff;">{{formData.ModelName}}</span>
+                                                </el-form-item>
+                                                <el-form-item label="绑定设备：">
+                                                    <el-input size="mini" v-model="formData.bindId"
+                                                        placeholder="IP/设备名称">
+                                                    </el-input>
+                                                </el-form-item>
+                                                <el-form-item label="请求地址：">
+                                                    <el-input size="mini" v-model="formData.HttpURL"></el-input>
+                                                </el-form-item>
+                                                <el-form-item label="请求类型：">
+                                                    <el-select size="mini" value-key v-model="formData.RequestType"
+                                                        placeholder="请选择">
+                                                        <el-option label="GET" :value="0">
+                                                        </el-option>
+                                                        <el-option label="POST" :value="1">
+                                                        </el-option>
+                                                    </el-select>
+                                                </el-form-item>
+                                                <el-form-item label="请求参数：">
+                                                    <div style="text-align: right; border-bottom:1px solid #fff">
+                                                        <el-button type="primary" size="mini" @click="pushHttpData">增加参数
+                                                        </el-button>
+                                                    </div>
+                                                    <div class="igroup" v-for="(item,index) in formData.ModelInfoData">
+
+                                                        <el-input size="mini" v-model="item.key" style="width:200px"
+                                                            placeholder="请输入参数名称">
+                                                        </el-input>：
+                                                        <el-input size="mini" v-model="item.Value" placeholder="请输入参数值">
+                                                        </el-input>
+                                                        <el-button type="danger" size="mini" icon="el-icon-delete"
+                                                            circle @click="deleteHttpData(index)"></el-button>
+                                                    </div>
+                                                </el-form-item>
+
+                                                <el-form-item label="ModelShowData：">
+                                                    <div style="text-align: right;border-bottom:1px solid #fff">
+                                                        <el-button type="primary" size="mini" @click="pushData">增加参数
+                                                        </el-button>
+                                                    </div>
+                                                    <div class="igroup" v-for="(item,index) in formData.ModelShowData">
+
+                                                        <span class="label">Title：</span>
+                                                        <el-input size="mini" v-model="item.Title"></el-input>
+                                                        <span class="label">Content：</span>
+                                                        <el-input size="mini" v-model="item.Content"></el-input>
+                                                        <el-button type="danger" size="mini" icon="el-icon-minus" circle
+                                                            @click="deleteData(index)"></el-button>
+                                                    </div>
+                                                </el-form-item>
+
+                                                <el-form-item v-if="formData.ModelID!=''">
+                                                    <el-button type="primary" size="mini" @click="handleSave">保 存
+                                                    </el-button>
+                                                    <el-button type="success" size="mini" @click="handleTest">测 试
+                                                    </el-button>
+                                                </el-form-item>
+                                            </el-form>
+                                        </div>
+                                        <div class="line"></div>
+
+                                        <div class="testBox">
+
+                                            <div class="testMain">
+                                                <div>
+                                                    <ul class="list">
+                                                        <li><span class="first">模型ID：</span><span
+                                                                class="secend">{{formData.ModelID}}</span></li>
+                                                        <li><span class="first">模型名称：</span><span
+                                                                class="secend">{{formData.ModelName}}</span></li>
+                                                        <li v-for="(item,index) in testData" :key="index">
+                                                            <span class="first">{{item.Name}}：</span><span
+                                                                v-if="item.Type!='TypeImage'"
+                                                                class="secend">{{item.Value}}</span>
+                                                            <el-image v-else style="width: 100px; height: 100px"
+                                                                :src="item.Value" :fit="'fill'"></el-image>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </settings-section>
+                <settings-section id="skpz">
+                    <div class="header">
+                        <h1>Socket设置</h1>
+                    </div>
+                    <div class="card">
+                        <div style="min-width: 320px;"></div>
+                        <el-form label-position="right" label-width="80px" :model="socketConfig">
+                            <div v-for="(item,index) in socketConfig" :key="index" :rules="rules">
+                                <div class="s_line">地址{{index}}：<el-button v-if="index>0" @click="delectDomain(index)"
+                                        type="danger" size="mini" icon="el-icon-delete" circle></el-button>
+                                </div>
+                                <el-form-item label="IP">
+                                    <el-input v-model="item.URL" size="mini" style="width: 500px;"></el-input>
+                                </el-form-item>
+                                <el-form-item label="端口">
+                                    <el-input v-model="item.Port" size="mini" style="width: 500px;"></el-input>
+                                </el-form-item>
+                            </div>
+                            <el-form-item>
+                                <el-button type="primary" @click="submitForm" size="mini">保存</el-button>
+                                <el-button type="success" @click="addDomain" size="mini">新增链接</el-button>
+                            </el-form-item>
+                        </el-form>
+
+                    </div>
+                </settings-section>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+  
+    var app = new Vue({
+        el: '#app',
+        data() {
+            var isValidIP= function (ip) {
+        var reg =
+            /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/
+        let r=reg.test(ip)
+            if (ip === '') {
+          callback(new Error('请输入IP'));
+        } else {
+          if (!r) {
+            callback(new Error('请输入正确格式的IP'));
+          }
+          callback();
+        }
+        return ;
+    }
+            return {
+                rules: {
+                    URL: [{
+                        validator: isValidIP,
+                        trigger: 'blur'
+                    }]
+                },
+                socketConfig: [{
+                    URL: '',
+                    Port: ''
+                }],
+                selectLeft: '',
+                testDialogVisible: false,
+                res: true,
+                centerDialogVisible: false,
+                defaultProps: {
+                    children: 'Children',
+                    label: 'name'
+                },
+                zclist: [],
+                formData: {
+                    BindId:'',
+                    ModelID: '',
+                    ModelName: '',
+                    HttpURL: '',
+                    RequestType:0,
+                    ModelInfoData: [],
+                    ModelShowData: [{
+                        Title: '',
+                        Content: ''
+                    }]
+
+                },
+                testData: [],
+                curentData: {
+                    id: '',
+                    name: ""
+                }
+            };
+        },
+       created(){
+        this.setRayCast()
+        this.getZcListByPos()
+        this.getsocketConfig()
+       },
+        mounted() {
+            
+
+            $('#goback').click(() => {
+                window.location.href="./index.html"
+            })
+        },
+        methods: {
+            setRayCast(e){
+                httpRequest(baseUrl + '?Method=SetRayCast', {"value_bool":e}).then(
+                            res => {
+                                 
+                            })
+            },
+            openUI(){
+                httpRequest(baseUrl + '?Method=ImportProject', {}).then(
+            res => {
+                window.location.href="./index.html"
+            })
+            },
+            getZcListByPos() {
+                this.ckFlag='pos'
+                let that = this
+                $.get(baseUrl + "?Method=GetEquipementListDependStruct", {}, function (result) {
+                    if (result.code == 200) {
+                        that.zclist = result.data.Children
+                    } else {
+                        console.log(result);
+                        alert('出错了')
+                    }
+
+                });
+            },
+            handleClose(done) {
+                this.testDialogVisible = false
+                done();
+            },
+            handleNodeClick(e) {
+
+                if (e.isLeaf && e.key) {
+                     this.getModelInfoByKey(e.key)
+                }
+            },
+            getModelInfoByKey(id){
+                let that = this
+                $.get(baseUrl + "?Method=GetEquipementDependID&ID=" + id, {}, function (result) {
+                    if (result.code == 200) {
+                        that.formData = result.data
+                    } else {
+                        console.log(result);
+                        alert('出错了')
+                    }
+
+                });
+            },
+            gotoPoint(s) {
+                this.selectLeft = s
+                window.location.href = s
+            },
+            addDomain() {
+                this.socketConfig.push({
+                    URL: '',
+                    Port: ''
+                })
+            },
+            delectDomain(i) {
+                this.socketConfig.splice(i, 1)
+            },
+            getsocketConfig(){
+                let that = this
+                $.get(baseUrl + "?Method=GetSocketPort", {}, function (result) {
+                    if (result.code == 200) {
+                        that.socketConfig = result.data.Children
+                    } else {
+                        console.log(result);
+                        alert('出错了')
+                    }
+
+                });
+            },
+            submitForm() {
+                // SocketUrlSet(this.socketConfig)
+                httpRequest(baseUrl + '?Method=SetSocketURL', this.socketConfig).then(
+                            res => {
+                                 
+                            })
+            },
+
+            handleSave() {
+                // alert(JSON.stringify(this.formData) )
+                httpRequest(baseUrl + '?Method=SaveWarningBinding', this.formData).then(
+                            res => {
+                                 
+                            })
+            },
+            handleTest() {
+           
+                this.testDialogVisible = true
+            },
+            pushData() {
+                this.formData.ModelShowData.push({
+                    Title: '',
+                    Content: ''
+                })
+            },
+            deleteData(i) {
+                if (this.formData.ModelShowData.length > 1) {
+                    this.formData.ModelShowData.splice(i, 1)
+                }
+            },
+            pushHttpData() {
+                this.formData.ModelInfoData.push({
+                    key: '',
+                    Value: '',
+                    Description: ''
+                })
+            },
+            deleteHttpData(i) {
+                this.formData.ModelInfoData.splice(i, 1)
+            },
+          
+        }
+    })
+</script>
+
+</html>
