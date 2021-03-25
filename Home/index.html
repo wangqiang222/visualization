@@ -292,33 +292,21 @@
                                
                                <span v-if="xjStatus=='开始增加巡检'" class="addBtn" @click="ExitDrawCircuit">取消</span>
                                <span v-if="xjStatus=='开始增加巡检'" class="addBtn" @click="ExitDrawCircuit">保存</span>
+                              
                             </div>
                             <div class="ly_1">
                                 <ul class="xj_ul">
-                                    <li>
+                                    <li v-for="item in xjList" >
                                         <span>
-                                            1.巡检路线1
+                                            {{item}}
                                         </span>
                                         <span>
-                                            <el-button v-if="xjStatus=='待命中'" type="primary" size="mini">开始巡检</el-button>
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span>
-                                            2.巡检路线2
-                                        </span>
-                                        <span>
-                                            <el-button v-if="xjStatus=='待命中'" type="primary" size="mini">开始巡检</el-button>
+                                            <el-button v-if="xjStatus=='待命中'" type="primary" size="mini" @click="StartCircuit(item)">开始巡检</el-button>
+                                            <el-button v-if="xjStatus=='开始巡检中' && xjName==item" type="primary" size="mini" @click="ExitCircuit(item)">结束巡检</el-button>
+                                        
                                         </span>
                                     </li>
-                                    <li>
-                                        <span>
-                                            3.巡检路线3
-                                        </span>
-                                        <span>
-                                            <el-button v-if="xjStatus=='待命中'" type="primary" size="mini">开始巡检</el-button>
-                                        </span>
-                                    </li>
+                                 
                                 </ul>
                             </div>
                         </div>
@@ -495,6 +483,8 @@
         var app = new Vue({
             el: '#app',
             data: {
+                xjName:'',
+                xjList:[],
                 xjForm:{id:''},
                 xjStatus:'待命中',
                 addXjVisible:false,
@@ -934,9 +924,29 @@
                             })
                 },
                 GetCircuitsName(){
+                    let that = this
                     $.get(baseUrl + '?Method=GetCircuitsName',function(data){
-                        console.log(res, 7777);
+                        if (data.code == 200) {
+                            that.xjList= data.data
+                        }
                     })
+                },
+                StartCircuit(e){
+
+                    httpRequest(baseUrl + '?Method=StartCircuit', {"id":e}).then(
+                            res => {
+                                this.xjName=e
+                                this.xjStatus='开始巡检中'
+                             
+                    
+                            })
+                },
+                ExitCircuit(e){
+                    httpRequest(baseUrl + '?Method=ExitCircuit', {"id":e}).then(
+                            res => {
+                                this.xjName=''
+                                this.xjStatus='待命中'
+                            })
                 },
                 goSet(){
                     window.location.href='./setting.html'
