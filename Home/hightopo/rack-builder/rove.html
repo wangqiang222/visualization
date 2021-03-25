@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>机柜</title>
+    <style>
+        .ht-toolTip {
+            outline: 0;
+            margin: 0;
+            padding: 8px 5px;
+            box-sizing: border-box;
+            position: absolute;
+            background-color: rgba(0, 0, 0, .3);
+            border-radius: 5px;
+            color: #f0f8ff;
+            transition: all .1s
+        }
+        
+        .move .rightView+.view {
+            display: none;
+        }
+        
+        .move .rightView>.view:last-child {
+            display: none;
+        }
+        
+        .move .rightView>.view:first-child {
+            top: 0px!important;
+        }
+        
+        .move ._dividerDiv {
+            display: none;
+        }
+        
+        .move .centerView {
+            display: none;
+        }
+    </style>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" type="text/css" href="./layui/css/layui.css" />
+    <!-- 引入组件库 -->
+    <script src="./layui/layui.js"></script>
+    <script src="./js/jquery.min.js"></script>
+</head>
+
+<body class="move">
+    <script>
+        htconfig = {
+            Color: {
+                highlight: '#45c4f9',
+                titleBackground: '#076186',
+                titleIconBackground: 'white',
+                headerBackground: '#DAECF4'
+            },
+            Default: {
+                dialogButtonBackground: '#45c4f9',
+                dialogButtonSelectBackground: '#39B0E4',
+                dialogButtonLabelColor: '#fff'
+            }
+        };
+    </script>
+    <script src="../../guide/lib/core/ht.js"></script>
+    <script src="../../guide/lib/plugin/ht-form.js"></script>
+    <script src="../../guide/lib/plugin/ht-cssanimation.js"></script>
+    <script src="../../guide/lib/plugin/ht-contextmenu.js"></script>
+    <script src="../../guide/lib/plugin/ht-dialog.js"></script>
+    <script src="../../guide/lib/plugin/ht-overview.js"></script>
+    <script src="js/rove.js"></script>
+</body>
+
+</html>

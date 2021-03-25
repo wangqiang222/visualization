@@ -290,8 +290,8 @@
 
                                <span v-if="xjStatus=='待命中'" class="addBtn" @click="handleXj"><i class="el-icon-plus"></i>增加巡检</span>
                                
-                               <span v-if="xjStatus=='开始增加巡检'" class="addBtn" @click="ExCircuit">取消</span>
-                               <span v-if="xjStatus=='开始增加巡检'" class="addBtn" @click="ExCircuit">保存</span>
+                               <span v-if="xjStatus=='开始增加巡检'" class="addBtn" @click="ExitDrawCircuit">取消</span>
+                               <span v-if="xjStatus=='开始增加巡检'" class="addBtn" @click="ExitDrawCircuit">保存</span>
                             </div>
                             <div class="ly_1">
                                 <ul class="xj_ul">
@@ -430,13 +430,13 @@
   >
   <el-form label-position="right" label-width="80px" :model="xjForm">
     <el-form-item label="名称">
-      <el-input v-model="xjForm.name"></el-input>
+      <el-input v-model="xjForm.id"></el-input>
     </el-form-item>
  
   </el-form>
   <span slot="footer" class="dialog-footer">
     <el-button size="mini" @click="addXjVisible = false">取 消</el-button>
-    <el-button size="mini" type="primary" @click="startCircuit">确 定</el-button>
+    <el-button size="mini" type="primary" @click="StartDrawCircuit">确 定</el-button>
   </span>
 </el-dialog>
 
@@ -495,7 +495,7 @@
         var app = new Vue({
             el: '#app',
             data: {
-                xjForm:{name:''},
+                xjForm:{id:''},
                 xjStatus:'待命中',
                 addXjVisible:false,
                 leavel: 'all',
@@ -728,6 +728,7 @@
             created() {
                 this.getBuildingList()
                 this.getSystemClassification()
+                this.GetCircuitsName()
             
             },
             mounted() {
@@ -911,7 +912,7 @@
                 handleXj(){
                     this.addXjVisible=true
                 },
-                startCircuit(){
+                StartDrawCircuit(){
                     this.xjStatus="开始增加巡检"
                     this.addXjVisible=false
                     httpRequest(baseUrl + '?Method=StartDrawCircuit', this.xjForm).then(
@@ -919,13 +920,23 @@
                                 console.log(res, 7777);
                                 this.addXjVisible=false
                             })
-                    // 
+                     
 
                    
                 },
-                ExCircuit(){
-                    this.xjStatus='待命中'
-                    // this.addXjVisible=false
+                ExitDrawCircuit(){
+                
+                    httpRequest(baseUrl + '?Method=ExitDrawCircuit', {"value_bool":true}).then(
+                            res => {
+                                this.xjStatus='待命中'
+                                console.log(res, 7777);
+                    
+                            })
+                },
+                GetCircuitsName(){
+                    $.get(baseUrl + '?Method=GetCircuitsName',function(data){
+                        console.log(res, 7777);
+                    })
                 },
                 goSet(){
                     window.location.href='./setting.html'
@@ -1004,7 +1015,7 @@
                             tag: str,
                             state: ''
                         }
-                        httpRequest(baseUrl + '?Method=GetStateInfor', params).then(
+                        httpRequest(baseUrl + '?Method=SetStateInfor', params).then(
                             res => {
                                 console.log(res, 7777);
                             })
@@ -1023,7 +1034,7 @@
                             tag: str,
                             state: ''
                         }
-                        httpRequest(baseUrl + '?Method=GetStateInfor', params).then(
+                        httpRequest(baseUrl + '?Method=SetStateInfor', params).then(
                             res => {
                                 console.log(res, 7777);
                             })
