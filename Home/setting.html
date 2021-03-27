@@ -8,7 +8,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="./css/element-ui.css">
     <link rel="stylesheet" href="./setting.css">
-    
+
     <script src="./js/jquery.min.js"></script>
     <script src="./js/vue.js"></script>
     <script src="./js/element-ui.js"></script>
@@ -46,14 +46,14 @@
                                         <el-tree :data="zclist" :props="defaultProps" @node-click="handleNodeClick">
                                             <span class="custom-tree-node" slot-scope="{ node, data }">
                                                 <span class="ct">
-                                          
+
                                                     <span v-if="data.isLeaf" class="el-icon-present"></span>
                                                     <span v-else class="el-icon-location-outline"></span>
-                                                     {{ node.label }}
+                                                    {{ node.label }}
                                                 </span>
                                             </span>
                                         </el-tree>
-                                        
+
                                     </div>
 
                                     <div class="d-body">
@@ -186,24 +186,23 @@
     </div>
 </body>
 <script>
-  
     var app = new Vue({
         el: '#app',
         data() {
-            var isValidIP= function (ip) {
-        var reg =
-            /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/
-        let r=reg.test(ip)
-            if (ip === '') {
-          callback(new Error('请输入IP'));
-        } else {
-          if (!r) {
-            callback(new Error('请输入正确格式的IP'));
-          }
-          callback();
-        }
-        return ;
-    }
+            var isValidIP = function (ip) {
+                var reg =
+                    /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/
+                let r = reg.test(ip)
+                if (ip === '') {
+                    callback(new Error('请输入IP'));
+                } else {
+                    if (!r) {
+                        callback(new Error('请输入正确格式的IP'));
+                    }
+                    callback();
+                }
+                return;
+            }
             return {
                 rules: {
                     URL: [{
@@ -225,11 +224,11 @@
                 },
                 zclist: [],
                 formData: {
-                    BindId:'',
+                    BindId: '',
                     ModelID: '',
                     ModelName: '',
                     HttpURL: '',
-                    RequestType:0,
+                    RequestType: 0,
                     ModelInfoData: [],
                     ModelShowData: [{
                         Title: '',
@@ -244,33 +243,36 @@
                 }
             };
         },
-       created(){
-        this.setRayCast()
-        this.getZcListByPos()
-        this.getsocketConfig()
-       },
+        created() {
+            this.setRayCast(true)
+            this.getZcListByPos()
+            this.getsocketConfig()
+
+        },
         mounted() {
-            
+
 
             $('#goback').click(() => {
-                window.location.href="./index.html"
+                window.location.href = "./index.html"
             })
         },
         methods: {
-            setRayCast(e){
-                httpRequest(baseUrl + '?Method=SetRayCast', {"value_bool":e}).then(
-                            res => {
-                                 
-                            })
+            setRayCast(e) {
+                httpRequest(baseUrl + '?Method=SetRayCast', {
+                    "value_bool": e
+                }).then(
+                    res => {
+
+                    })
             },
-            openUI(){
+            openUI() {
                 httpRequest(baseUrl + '?Method=ImportProject', {}).then(
-            res => {
-                window.location.href="./index.html"
-            })
+                    res => {
+                        window.location.href = "./index.html"
+                    })
             },
             getZcListByPos() {
-                this.ckFlag='pos'
+                this.ckFlag = 'pos'
                 let that = this
                 $.get(baseUrl + "?Method=GetEquipementListDependStruct", {}, function (result) {
                     if (result.code == 200) {
@@ -289,10 +291,10 @@
             handleNodeClick(e) {
 
                 if (e.isLeaf && e.key) {
-                     this.getModelInfoByKey(e.key)
+                    this.getModelInfoByKey(e.key)
                 }
             },
-            getModelInfoByKey(id){
+            getModelInfoByKey(id) {
                 let that = this
                 $.get(baseUrl + "?Method=GetEquipementDependID&ID=" + id, {}, function (result) {
                     if (result.code == 200) {
@@ -317,11 +319,20 @@
             delectDomain(i) {
                 this.socketConfig.splice(i, 1)
             },
-            getsocketConfig(){
+            getsocketConfig() {
                 let that = this
                 $.get(baseUrl + "?Method=GetSocketPort", {}, function (result) {
                     if (result.code == 200) {
-                        that.socketConfig = result.data.Children
+                        if (result.data == null) {
+                            that.socketConfig = [{
+                                URL: '',
+                                Port: ''
+                            }]
+                        } else {
+                            that.socketConfig = result.data
+                        }
+
+
                     } else {
                         console.log(result);
                         alert('出错了')
@@ -332,20 +343,20 @@
             submitForm() {
                 // SocketUrlSet(this.socketConfig)
                 httpRequest(baseUrl + '?Method=SetSocketURL', this.socketConfig).then(
-                            res => {
-                                 
-                            })
+                    res => {
+
+                    })
             },
 
             handleSave() {
                 // alert(JSON.stringify(this.formData) )
                 httpRequest(baseUrl + '?Method=SaveWarningBinding', this.formData).then(
-                            res => {
-                                 
-                            })
+                    res => {
+
+                    })
             },
             handleTest() {
-           
+
                 this.testDialogVisible = true
             },
             pushData() {
@@ -369,7 +380,7 @@
             deleteHttpData(i) {
                 this.formData.ModelInfoData.splice(i, 1)
             },
-          
+
         }
     })
 </script>

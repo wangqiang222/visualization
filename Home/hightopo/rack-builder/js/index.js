@@ -213,7 +213,6 @@ var ICON_SIZE = 26;
 
 var RACK_GAP = 16;
 
-
 // 41.6 600
 ht.Default.setImage('rack', {
     "dataBindings": [{
@@ -231,7 +230,7 @@ ht.Default.setImage('rack', {
     },
     "fitSize": true,
     "comps": [{
-        "type": "components/rack.json", //RACK
+        "type": "components/rack.json",
         "displayName": "rack",
         "rect": [0, 0, 240, 500],
         "usize": {
@@ -1134,25 +1133,11 @@ var ToolTip = function() {
 
 // 设备数据
 var listData = [{ id: 12, name: 'Switch 1', type: 9, uHeight: 1, img: 'http://10.163.228.54:8080/img/s.png' }, { id: 13, name: 'Switch Z11', type: 9, img: 'http://10.163.228.54:8080/img/s.png', uHeight: 2 }, { id: 14, name: 'Switch Z13', type: 9, uHeight: 2, img: 'http://10.163.228.54:8080/img/s.png' }, { id: 15, name: 'Switch Y13', type: 9, uHeight: 3, img: 'http://10.163.228.54:8080/img/s.png' }];
-var tempJson = {
-    "width": 1,
-    "height": 1,
-    "comps": [{
-        "type": "rect",
-        "background": "rgb(255,255,255)",
-        "borderColor": "#979797",
-        "rect": [
-            0,
-            0,
-            1,
-            1
-        ]
-    }]
-}
+
 var RackBuilder = function() {
     function RackBuilder(main) {
         classCallCheck(this, RackBuilder);
-
+        console.log(main);
         this.main = main;
         this.init();
     }
@@ -1164,14 +1149,14 @@ var RackBuilder = function() {
                     listView = this.listView = new ht.widget.ListView(),
                     listForm = this.listForm = new ht.widget.FormPane(),
                     gv = this.gv = new ht.graph.GraphView(),
-                    overview = this.overview = new ht.graph.Overview(gv),
+                    // overview = this.overview = new ht.graph.Overview(gv),
                     listBorder = this.listBorder = new ht.widget.BorderPane(),
                     borderPane = this.borderPane = new ht.widget.BorderPane(),
                     toolbar = this.toolbar = new ht.widget.Toolbar(),
                     splitView = this.splitView = new ht.widget.SplitView(listBorder, borderPane, 'h', 300);
                 listBorder.setTopView(listForm);
                 listBorder.setCenterView(listView);
-                listBorder.setBottomView(overview);
+                // listBorder.setBottomView(overview);
                 listBorder.setTopHeight(32);
                 listBorder.setBottomHeight(150);
                 // 列表下拉过滤
@@ -1209,12 +1194,12 @@ var RackBuilder = function() {
                 // 右侧画布
                 borderPane.setCenterView(gv);
                 borderPane.setTopView(toolbar);
-                borderPane.setTopHeight(32);
+                borderPane.setTopHeight(40);
                 this.initToolbar();
                 this.initDialog();
 
                 var dragHelper = this.dragHelper = new ht.Node();
-                dragHelper.setImage(tempJson);
+                dragHelper.setImage('http://10.163.228.54:8080/hightopo/demo/rack-builder/symbols/temp.json');
                 dragHelper.setAnchor(0, 0);
 
             }
@@ -1369,8 +1354,8 @@ var RackBuilder = function() {
                 toolbar = self.toolbar;
             var toolbarItems = [{
                 icon: {
-                    width: ICON_SIZE + 6,
-                    height: ICON_SIZE + 6,
+                    width: ICON_SIZE ,
+                    height: ICON_SIZE ,
                     comps: [{
                         type: 'image',
                         name: 'http://10.163.228.54:8080/img/add.png',
@@ -1383,13 +1368,14 @@ var RackBuilder = function() {
                     self.addRackDialog.show();
                 }
             }, {
-                icon: self.getToolbarIcon('toolbar.edit.rack', function() {
-                    var treeNode = self.main.sm.ld();
-                    if (treeNode && treeNode.a('type') === TYPE_RACK) {
-                        return true;
-                    }
-                    return self.gv.sm().ld() instanceof Rack;
-                }),
+                icon: {
+                    width: ICON_SIZE ,
+                    height: ICON_SIZE ,
+                    comps: [{
+                        type: 'image',
+                        name: 'http://10.163.228.54:8080/img/edit.png',
+                    }]
+                },
                 toolTip: '编辑机柜信息',
                 action: function action() {
                     var ld = self.gv.sm().ld();
@@ -1400,24 +1386,22 @@ var RackBuilder = function() {
                     self.addRackDialog.show();
                 }
             }, {
-                icon: self.getToolbarIcon('toolbar.delete', function() {
-                    var treeNode = self.main.sm.ld();
-
-                    if (treeNode && treeNode.a('type') === TYPE_RACK) {
-
-                        return true;
-                    }
-
-                    return self.gv.sm().ld() instanceof Rack;
-                }),
+                icon: {
+                    width: ICON_SIZE ,
+                    height: ICON_SIZE ,
+                    comps: [{
+                        type: 'image',
+                        name: 'http://10.163.228.54:8080/img/delete.png',
+                    }]
+                },
                 toolTip: '删除机柜',
                 action: function action() {
                     self.handleRemoveRack();
                 }
             }, {
                 icon: {
-                    width: ICON_SIZE + 6,
-                    height: ICON_SIZE + 6,
+                    width: ICON_SIZE ,
+                    height: ICON_SIZE,
                     comps: [{
                         type: 'image',
                         name: 'http://10.163.228.54:8080/img/save.png',
@@ -1442,6 +1426,22 @@ var RackBuilder = function() {
                             });
                         }
                     })
+
+                }
+            },
+            {
+                icon: {
+                    width: ICON_SIZE ,
+                    height: ICON_SIZE ,
+                    comps: [{
+                        type: 'image',
+                        name: 'http://10.163.228.54:8080/img/close.png',
+                    }]
+                },
+                toolTip: '关 闭',
+                action: function action() {
+                    window.location.href="./../../index.html"
+                    
 
                 }
             }];

@@ -219,10 +219,10 @@
                         能效管理
                     </div>
                     <div class="ly_1">
-                        <el-checkbox-group v-model="selectEfficiency" >
-                            <el-checkbox v-for="(items,i) in efficiencyList" :key="i" :label="items" style="width: 120px;margin: 5px 0px;">
-                                {{items}}</el-checkbox>
-                        </el-checkbox-group>
+                        <el-radio  label="电力" >
+                            电力</el-radio>
+                            <el-radio v-model="tempCould" @click.native.prevent="radioClickCloud('温度云图')" label="温度云图" >
+                            温度云图</el-radio>
 
                         <!-- <div class="block">
                             <span class="demonstration"></span>
@@ -290,8 +290,8 @@
 
                                <span v-if="xjStatus=='待命中'" class="addBtn" @click="handleXj"><i class="el-icon-plus"></i>增加巡检</span>
                                
-                               <span v-if="xjStatus=='开始增加巡检'" class="addBtn" @click="ExitDrawCircuit">取消</span>
-                               <span v-if="xjStatus=='开始增加巡检'" class="addBtn" @click="ExitDrawCircuit">保存</span>
+                               <span v-if="xjStatus=='开始增加巡检'" class="addBtn" @click="ExitDrawCircuit(true)">保存</span>
+                               <span v-if="xjStatus=='开始增加巡检'" class="qxBtn" @click="ExitDrawCircuit(false)">取消</span>
                               
                             </div>
                             <div class="ly_1">
@@ -302,6 +302,10 @@
                                         </span>
                                         <span>
                                             <el-button v-if="xjStatus=='待命中'" type="primary" size="mini" @click="StartCircuit(item)">开始巡检</el-button>
+                                            <el-button v-if="xjStatus=='待命中'" type="success" size="mini" @click="ChangeDrawCircuit(item)">修改</el-button>
+                                            <el-button v-if="xjStatus=='正在修改中'&& xjName==item" type="primary" size="mini" @click="ExitChangeCircuit(true)">保存修改</el-button>
+                                            <el-button v-if="xjStatus=='正在修改中'&& xjName==item" type="warning" size="mini" @click="ExitChangeCircuit(false)">取消修改</el-button>
+                                            <el-button v-if="xjStatus=='待命中'" type="warning" size="mini" @click="DeleteCircuit(item)">删除</el-button>
                                             <el-button v-if="xjStatus=='开始巡检中' && xjName==item" type="primary" size="mini" @click="ExitCircuit(item)">结束巡检</el-button>
                                         
                                         </span>
@@ -502,6 +506,7 @@
                 resourcesList:["空间","承重","电力","冷量","网络"],
                 selectResources:[],
 
+                tempCould:"",
                 efficiencyList:["电力图","温度云图"],
                 selectEfficiency:[],
 
@@ -719,6 +724,10 @@
                 this.getBuildingList()
                 this.getSystemClassification()
                 this.GetCircuitsName()
+                httpRequest(baseUrl + '?Method=SetRayCast', {"value_bool":false}).then(
+                            res => {
+                                 
+                            })
             
             },
             mounted() {
@@ -742,6 +751,7 @@
                     that.selectDevice=[]
                     that.selectEfficiency=[]
                     that.selectResources=[]
+                    that.tempCould=""
                     that.sendCommd('hide')
                     hide_Box_yyzl()
 
@@ -900,26 +910,35 @@
             },
             methods: {
                 handleXj(){
-                    this.addXjVisible=true
+                    httpRequest(baseUrl + '?Method=SetRayCast', {"value_bool":true}).then(
+                            res => {
+                                this.addXjVisible=true
+                            })
+                   
                 },
                 StartDrawCircuit(){
                     this.xjStatus="开始增加巡检"
                     this.addXjVisible=false
+                    let that=this
                     httpRequest(baseUrl + '?Method=StartDrawCircuit', this.xjForm).then(
                             res => {
-                                console.log(res, 7777);
-                                this.addXjVisible=false
+                                httpRequest(baseUrl + '?Method=SetRayCast', {"value_bool":false}).then(
+                                  resp => {
+                                    that.xjForm.id=""
+                                    that.addXjVisible=false
+                              })
+                              
                             })
                      
 
                    
                 },
-                ExitDrawCircuit(){
+                ExitDrawCircuit(e){
                 
-                    httpRequest(baseUrl + '?Method=ExitDrawCircuit', {"value_bool":true}).then(
+                    httpRequest(baseUrl + '?Method=ExitDrawCircuit', {"value_bool":e}).then(
                             res => {
                                 this.xjStatus='待命中'
-                                console.log(res, 7777);
+                                this.GetCircuitsName()
                     
                             })
                 },
@@ -946,7 +965,66 @@
                             res => {
                                 this.xjName=''
                                 this.xjStatus='待命中'
+                                this.GetCircuitsName()
                             })
+                },
+                DeleteCircuit(e){
+                    httpRequest(baseUrl + '?Method=DeleteCircuit', {"id":e}).then(
+                            res => {
+                              this.GetCircuitsName()
+                            })
+                },
+                ChangeDrawCircuit(e){
+                    httpRequest(baseUrl + '?Method=ChangeDrawCircuit', {"id":e}).then(
+                            res => {
+                                this.xjName=e
+                                this.xjStatus='正在修改中'
+                            })
+                },
+                ExitChangeCircuit(e){
+                    httpRequest(baseUrl + '?Method=ExitChangeCircuit', {"value_bool":e}).then(
+                            res => {
+                                this.xjStatus='待命中'
+                              this.GetCircuitsName()
+                            })
+                },
+                radioClickCloud(e){
+                    let sarr
+                 
+                    if (e == this.tempCould) {
+                        this.tempCould=''
+                        let params = {
+                            buildIndex:-1,
+                            floorIndex:-1
+                        }
+                        httpRequest(baseUrl + '?Method=ShowTempCouldPic', params).then(
+                            res => {
+                         
+                            })
+                    }else{
+                        this.tempCould=e
+                        if (this.buildingFloor!="") {
+                            sarr = this.buildingFloor.split('-')
+                        let params = {
+                            buildIndex:Number(sarr[0]),
+                            floorIndex:Number(sarr[1])
+                        }
+                        httpRequest(baseUrl + '?Method=ShowTempCouldPic', params).then(
+                            res => {
+                         
+                            })
+                        }else{
+                            let params = {
+                            buildIndex:-1,
+                            floorIndex:-1
+                        }
+                        httpRequest(baseUrl + '?Method=ShowTempCouldPic', params).then(
+                            res => {
+                         
+                            })
+                        }
+                        
+                    }
                 },
                 goSet(){
                     window.location.href='./setting.html'
@@ -964,14 +1042,37 @@
                         this.buildingFloor = ""
                         this.sendCommd('hide')
                         renderLayer01Right("all")
+                        if (this.tempCould!='') {
+                            let params = {
+                            buildIndex:-1,
+                            floorIndex:-1
+                        }
+                        httpRequest(baseUrl + '?Method=ShowTempCouldPic', params).then(
+                            res => {
+                         
+                            })
+                        }
+                        
 
                     } else {
                         this.buildingFloor = e;
                         // this.setEquipmentState()
                         
                         this.sendCommd('show')
-                        console.log(e,this.selectClass);
+                       
                         renderLayer01Right(e,this.selectClass)
+
+                        if (this.tempCould!='') {
+                            let sarr = this.buildingFloor.split('-')
+                            let params = {
+                            buildIndex:Number(sarr[0]),
+                            floorIndex:Number(sarr[1])
+                        }
+                        httpRequest(baseUrl + '?Method=ShowTempCouldPic', params).then(
+                            res => {
+                         
+                            })
+                        }
                     }
 
                    
@@ -1212,7 +1313,24 @@
 
                 },
                 handleClick(tab, event) {
-                    console.log(tab, event);
+                    if (tab.name=="变更管理") {
+                        this.buildingFloor=""
+                        this.selectClass = ""
+                        this.selectDevice=[]
+                        this.selectEfficiency=[]
+                        this.selectResources=[]
+                        this.tempCould=""
+                        this.sendCommd('hide')
+                    hide_Box_yyzl()
+
+                    hide_Box_nxgl()
+                    hide_Box_zygl()
+                    hide_Box_ywgl()
+                    downHome()
+                    upFirst()
+                        window.location.href='./hightopo/rack-builder/index.html'
+                    }
+                    
                 },
                 radioChange(params) {
              

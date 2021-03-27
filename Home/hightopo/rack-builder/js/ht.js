@@ -44,6 +44,7 @@
         function x() { if (g !== O) return g; var Q = T.get("EXT_texture_filter_anisotropic"); return g = null !== Q ? a.getParameter(Q.MAX_TEXTURE_MAX_ANISOTROPY_EXT) : 0 }
 
         function f(I) {
+          
             if ("highp" === I) {
                 if (a.getShaderPrecisionFormat(a.VERTEX_SHADER, a.HIGH_FLOAT).precision > 0 && a.getShaderPrecisionFormat(a.FRAGMENT_SHADER, a.HIGH_FLOAT).precision > 0) return "highp";
                 I = "mediump"
@@ -54,7 +55,9 @@
         l = l || {};
         var P = "undefined" != typeof WebGL2RenderingContext && a instanceof WebGL2RenderingContext,
             d = l.precision !== O ? l.precision : "highp",
+
             c = f(d);
+             
         c !== d && (console.warn("WebGL:", d, "not supported, using", c, "instead."), d = c);
         var v = l.logarithmicDepthBuffer === !0,
             B = a.getParameter(a.MAX_TEXTURE_IMAGE_UNITS),
@@ -71,16 +74,20 @@
             N = A && y,
             e = P ? a.getParameter(a.MAX_SAMPLES) : 0;
         return { getMaxAnisotropy: x, getMaxPrecision: f, precision: d, logarithmicDepthBuffer: v, maxTextures: B, maxVertexTextures: u, maxTextureSize: E, maxCubemapSize: p, maxAttributes: R, maxVertexUniforms: k, maxVaryings: I, maxFragmentUniforms: W, vertexTextures: A, floatFragmentTextures: y, elementTypeUint: D, floatVertexTextures: N, maxSamples: e }
+        console.log(111);
     }
 
     function b(K, l) { return K.z !== l.z ? l.z - K.z : K.id - l.id }
     var L = "ht";
+    console.log(y[L]);
     if (!y[L]) {
         ! function() {
+            
             Date.now && Date.prototype.getTime || (Date.now = function() { return (new Date).getTime() }), y.performance && y.performance.now || function() {
                 var w = Date.now();
                 y.performance || (y.performance = {}), y.performance.now = function() { return Date.now() - w }
             }();
+       
             for (var N = Date.now(), f = 16, g = ["ms", "moz", "webkit", "o"], L = 0; L < g.length && !y.requestAnimationFrame; ++L) y.requestAnimationFrame = y[g[L] + "RequestAnimationFrame"], y.cancelAnimationFrame = y[g[L] + "CancelAnimationFrame"] || y[g[L] + "CancelRequestAnimationFrame"];
             y.requestAnimationFrame || (y.requestAnimationFrame = function(t) {
                 var P = Date.now(),
@@ -95,12 +102,15 @@
                 }
                 return G
             }), y.btoa === O && (y.btoa = function(r) {
+                
                 for (var x, L, p = String(r), t = 0, d = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=", C = ""; p.charAt(0 | t) || (d = "=", t % 1); C += d.charAt(63 & x >> 8 - 8 * (t % 1))) {
                     if (L = p.charCodeAt(t += .75), L > 255) throw new Error("'btoa' failed: The string to be encoded contains characters outside of the Latin1 range.");
                     x = x << 8 | L
                 }
+               
                 return C
             })
+            console.log(y,777);
         }();
         var S, q, E, p, r = y.location,
             M = r && y.document,
@@ -116,10 +126,12 @@
             Q = function(m) { return !m },
             l = k.Color = u && u.Color || {},
             c = k.IsGetter = u && u.IsGetter || {};
+             
         ! function() {
             var Y = !1;
             try {
                 var d = n.defineProperty({}, "passive", { get: function() { return Y = !0, O } });
+         
                 r && (E = S = r) && y.addEventListener("test", d, d), r && (p = q = r) && y.removeEventListener("test", d, d)
             } catch (u) { Y = !1 }
             D.passiveSupported = Y
@@ -1221,7 +1233,7 @@
             } : function(p, F, i) { p[i] = F[i] },
             Xq = { 1: 29, 2: 30, 3: 31, 4: 32, 5: 33, 6: 26, 7: 27, 8: 28, 9: 21, 10: 22, 11: 23, 12: 24, 13: 25, 14: 14, 15: 15, 16: 16, 17: 17, 18: 18, 19: 19, 20: 20, 21: 9, 22: 10, 23: 11, 24: 12, 25: 13, 26: 6, 27: 7, 28: 8, 29: 1, 30: 2, 31: 3, 32: 4, 33: 5, 34: 36, 35: 37, 36: 34, 37: 35, 38: 54, 39: 55, 40: 52, 41: 53, 42: 50, 43: 51, 44: 49, 50: 42, 51: 43, 52: 40, 53: 41, 54: 38, 55: 39 },
             Hf = function() { var K = { 1: function(c, h) { return { x: c.x - h.width / 2, y: c.y - h.height / 2 } }, 2: function(h, f) { return { x: h.x + f.width / 2, y: h.y - f.height / 2 } }, 3: function(s, d) { return { x: s.x + s.width / 2, y: s.y - d.height / 2 } }, 4: function(v, t) { return { x: v.x + v.width - t.width / 2, y: v.y - t.height / 2 } }, 5: function($, i) { return { x: $.x + $.width + i.width / 2, y: $.y - i.height / 2 } }, 6: function(e) { return { x: e.x, y: e.y } }, 7: function(h) { return { x: h.x + h.width / 2, y: h.y } }, 8: function(Q) { return { x: Q.x + Q.width, y: Q.y } }, 9: function(L, _) { return { x: L.x - _.width / 2, y: L.y + _.height / 2 } }, 10: function(U, $) { return { x: U.x + $.width / 2, y: U.y + $.height / 2 } }, 11: function(Y, n) { return { x: Y.x + Y.width / 2, y: Y.y + n.height / 2 } }, 12: function(U, C) { return { x: U.x - C.width / 2 + U.width, y: U.y + C.height / 2 } }, 13: function(J, r) { return { x: J.x + J.width + r.width / 2, y: J.y + r.height / 2 } }, 14: function(d, j) { return { x: d.x - j.width / 2, y: d.y + d.height / 2 } }, 15: function(B) { return { x: B.x, y: B.y + B.height / 2 } }, 16: function(G, E) { return { x: G.x + E.width / 2, y: G.y + G.height / 2 } }, 17: function(y) { return { x: y.x + y.width / 2, y: y.y + y.height / 2 } }, 18: function(x, o) { return { x: x.x + x.width - o.width / 2, y: x.y + x.height / 2 } }, 19: function(G) { return { x: G.x + G.width, y: G.y + G.height / 2 } }, 20: function(g, L) { return { x: g.x + g.width + L.width / 2, y: g.y + g.height / 2 } }, 21: function(X, E) { return { x: X.x - E.width / 2, y: X.y + X.height - E.height / 2 } }, 22: function(g, B) { return { x: g.x + B.width / 2, y: g.y + g.height - B.height / 2 } }, 23: function(z, S) { return { x: z.x + z.width / 2, y: z.y + z.height - S.height / 2 } }, 24: function(q, E) { return { x: q.x + q.width - E.width / 2, y: q.y + q.height - E.height / 2 } }, 25: function($, c) { return { x: $.x + $.width + c.width / 2, y: $.y + $.height - c.height / 2 } }, 26: function(q) { return { x: q.x, y: q.y + q.height } }, 27: function(w) { return { x: w.x + w.width / 2, y: w.y + w.height } }, 28: function(P) { return { x: P.x + P.width, y: P.y + P.height } }, 29: function(t, h) { return { x: t.x - h.width / 2, y: t.y + t.height + h.height / 2 } }, 30: function(P, I) { return { x: P.x + I.width / 2, y: P.y + P.height + I.height / 2 } }, 31: function(l, s) { return { x: l.x + l.width / 2, y: l.y + l.height + s.height / 2 } }, 32: function(W, r) { return { x: W.x + W.width - r.width / 2, y: W.y + W.height + r.height / 2 } }, 33: function(j, N) { return { x: j.x + j.width + N.width / 2, y: j.y + j.height + N.height / 2 } }, 34: function(G, z) { return { x: G.x, y: G.y - z.height / 2 } }, 35: function(N, t) { return { x: N.x + N.width, y: N.y - t.height / 2 } }, 36: function(D, y) { return { x: D.x, y: D.y + D.height + y.height / 2 } }, 37: function(X, V) { return { x: X.x + X.width, y: X.y + X.height + V.height / 2 } }, 38: function(B, L) { return { x: B.x + B.width / 4, y: B.y - L.height / 2 } }, 39: function(w, H) { return { x: w.x + 3 * w.width / 4, y: w.y - H.height / 2 } }, 40: function(P) { return { x: P.x + P.width / 4, y: P.y } }, 41: function(m) { return { x: m.x + 3 * m.width / 4, y: m.y } }, 42: function(S, R) { return { x: S.x + S.width / 4, y: S.y + R.height / 2 } }, 43: function(b, f) { return { x: b.x + 3 * b.width / 4, y: b.y + f.height / 2 } }, 44: function(p, T) { return { x: p.x + p.width / 2, y: p.y + p.height / 2 - T.height / 2 } }, 45: function(Z) { return { x: Z.x + Z.width / 4, y: Z.y + Z.height / 2 } }, 46: function(U, B) { return { x: U.x + U.width / 2 - B.width / 2, y: U.y + U.height / 2 } }, 47: function(Q, F) { return { x: Q.x + Q.width / 2 + F.width / 2, y: Q.y + Q.height / 2 } }, 48: function(W) { return { x: W.x + 3 * W.width / 4, y: W.y + W.height / 2 } }, 49: function(T, u) { return { x: T.x + T.width / 2, y: T.y + T.height / 2 + u.height / 2 } }, 50: function(t, N) { return { x: t.x + t.width / 4, y: t.y + t.height - N.height / 2 } }, 51: function(d, l) { return { x: d.x + 3 * d.width / 4, y: d.y + d.height - l.height / 2 } }, 52: function(U) { return { x: U.x + U.width / 4, y: U.y + U.height } }, 53: function(p) { return { x: p.x + 3 * p.width / 4, y: p.y + p.height } }, 54: function(Z, y) { return { x: Z.x + Z.width / 4, y: Z.y + Z.height + y.height / 2 } }, 55: function(Z, J) { return { x: Z.x + 3 * Z.width / 4, y: Z.y + Z.height + J.height / 2 } } }; return Ip(y) ? function(k, d, J) { return K[k](d, J ? J : Xo) } : void 0 }();
-        gp(l, { highlight: "#1ABC9C", label: "#000", labelSelect: "#FFF", transparent: "rgba(0,0,0,0.35)", titleBackground: "#2C3E50", titleIconBackground: "#868686", headerBackground: "#ECF0F1", headerIconBackground: "#868686", headerSeparator: "#868686", headerLine: "#D9D9D9", background: "#FFF", disabledBackground: "rgba(255,255,255,0.65)", toolTipBackground: "#FFFFE0", rectSelectBorder: "#45C4F9", rectSelectBackground: "rgba(0,0,0,0.35)", editPointBorder: "#2C3E50", editPointBackground: "#D9D9D9", dash: "#2C3E50", groupBackground: "#ECF0F1", groupTitleBackground: "#2C3E50", gridBackground: "#D9D9D9", gridCellBorderColor: "#868686", gridBlockColor: "#868686", reverse: "#868686", contentIconBackground: "#868686", contentLine: "#D9D9D9", widgetBackground: "#ECF0F1", widgetBorder: "#D9D9D9", widgetIconBackground: "#868686", widgetIconBorder: "#868686", widgetIconGradient: "#D9D9D9", widgetIconHighlight: "#43AFF1", imageBackground: "#3498DB", imageGradient: "#FFF", chart: ["#2f7ed8", "#0d233a", "#8bbc21", "#910000", "#1aadce", "#492970", "#f28f43", "#77a1e5", "#c42525", "#a6c96a"] }, !0);
+        gp(l, { highlight: "#1ABC9C", label: "#000", labelSelect: "#FFF", transparent: "rgba(0,0,0,0.35)", titleBackground: "#2C3E50", titleIconBackground: "#868686", headerBackground: "#ECF0F1", headerIconBackground: "#fff", headerSeparator: "#868686", headerLine: "#D9D9D9", background: "#FFF", disabledBackground: "rgba(255,255,255,0.65)", toolTipBackground: "#fff", rectSelectBorder: "#45C4F9", rectSelectBackground: "rgba(0,0,0,0.35)", editPointBorder: "#2C3E50", editPointBackground: "#D9D9D9", dash: "#2C3E50", groupBackground: "#ECF0F1", groupTitleBackground: "#2C3E50", gridBackground: "#D9D9D9", gridCellBorderColor: "#868686", gridBlockColor: "#868686", reverse: "#868686", contentIconBackground: "#868686", contentLine: "#D9D9D9", widgetBackground: "#ECF0F1", widgetBorder: "#D9D9D9", widgetIconBackground: "#868686", widgetIconBorder: "#868686", widgetIconGradient: "#D9D9D9", widgetIconHighlight: "#43AFF1", imageBackground: "#3498DB", imageGradient: "#FFF", chart: ["#2f7ed8", "#0d233a", "#8bbc21", "#910000", "#1aadce", "#492970", "#f28f43", "#77a1e5", "#c42525", "#a6c96a"] }, !0);
         var Vo = l.reverse,
             sp = l.transparent,
             Kg = l.rectSelectBackground,
@@ -1240,7 +1252,9 @@
             sn = l.highlight,
             yp = l.label,
             ob = l.labelSelect;
+            console.log(jg,y.shutAlert1,333);
         if (jg && !y.shutAlert1) {
+            console.log(jg,y.shutAlert1,333);
             var Tk = new Date,
                 hn = jg.split("-"),
                 Db = new Date(Tk.getFullYear(), Tk.getMonth(), Tk.getDate()),
@@ -1265,6 +1279,7 @@
                     var U, w, J, I, K, N, L, z = "",
                         j = 0;
                     for (V = unescape(encodeURIComponent(V)); j < V.length;) U = V.charCodeAt(j++), w = V.charCodeAt(j++), J = V.charCodeAt(j++), I = U >> 2, K = (3 & U) << 4 | w >> 4, N = (15 & w) << 2 | J >> 6, L = 63 & J, isNaN(w) ? N = L = 64 : isNaN(J) && (L = 64), z = z + O.charAt(I) + O.charAt(K) + O.charAt(N) + O.charAt(L);
+                   
                     return z
                 },
                 decode: function(o, w, g) { for (var v, D, e, q, u, k, T, K = "", Y = g || 0; Y < o.length;) q = w.indexOf(o.charAt(Y++)), u = w.indexOf(o.charAt(Y++)), k = w.indexOf(o.charAt(Y++)), T = w.indexOf(o.charAt(Y++)), v = q << 2 | u >> 4, D = (15 & u) << 4 | k >> 2, e = (3 & k) << 6 | T, K += String.fromCharCode(v), 64 != k && (K += String.fromCharCode(D)), 64 != T && (K += String.fromCharCode(e)); return K = decodeURIComponent(escape(K)) },
@@ -1293,9 +1308,10 @@
                 }(),
                 clamp: function(s, T, H) { return Math.max(T, Math.min(H, s)) },
                 generateIncreasingID: function() { var o = 0; return function() { return ++o } }(),
-                encodeBase64: function(J, U) { return sc.encode(J, U || ae) },
+                encodeBase64: function(J, U) {  return sc.encode(J, U || ae) },
                 decodeBase64: function(X, _) { return sc.decode(X, _ || ae) },
                 randomArray: function(t, c) {
+                    
                     c = c || t.length;
                     for (var A = c - 1; A > 0; A--) {
                         var H = Math.floor(Math.random() * (A + 1)),
@@ -1513,8 +1529,9 @@
                 return this.x = S[0] * z + S[4] * s + S[8] * I + S[12] * l, this.y = S[1] * z + S[5] * s + S[9] * I + S[13] * l, this.z = S[2] * z + S[6] * s + S[10] * I + S[14] * l, this.w = S[3] * z + S[7] * s + S[11] * I + S[15] * l, this
             },
             divideScalar: function(e) { return this.multiplyScalar(1 / e) },
-            setAxisAngleFromQuaternion: function(W) { this.w = 2 * Math.acos(W.w); var h = Math.sqrt(1 - W.w * W.w); return 1e-4 > h ? (this.x = 1, this.y = 0, this.z = 0) : (this.x = W.x / h, this.y = W.y / h, this.z = W.z / h), this },
+            setAxisAngleFromQuaternion: function(W) {  this.w = 2 * Math.acos(W.w); var h = Math.sqrt(1 - W.w * W.w); return 1e-4 > h ? (this.x = 1, this.y = 0, this.z = 0) : (this.x = W.x / h, this.y = W.y / h, this.z = W.z / h), this },
             setAxisAngleFromRotationMatrix: function(A) {
+                
                 var e, u, b, W, U = .01,
                     K = .1,
                     q = A.el,
@@ -1527,6 +1544,7 @@
                     f = q[2],
                     J = q[6],
                     a = q[10];
+                    
                 if (Math.abs(Q - S) < U && Math.abs(w - f) < U && Math.abs(v - J) < U) {
                     if (Math.abs(Q + S) < K && Math.abs(w + f) < K && Math.abs(v + J) < K && Math.abs(m + $ + a - 3) < K) return this.set(1, 0, 0, 0), this;
                     e = Math.PI;
@@ -2107,6 +2125,7 @@
             },
             identity: function() { return this.set(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1), this },
             getInverse: function(K) {
+                console.log(888);
                 var m = this.el,
                     A = K.el,
                     U = A[0],
@@ -2363,6 +2382,7 @@
                 }
             },
             ms_attr: function(B) {
+                console.log(B);
                 B.a = function(z, $) {
                     var y = this;
                     if (2 === arguments.length) y.setAttr(z, $);
@@ -2685,9 +2705,9 @@
             getPropertyValue: ic,
             setPropertyValue: bm,
             addMethod: gp,
-            createGradient: function(L, V, n, o, b, Z, d, X) { var N = jc[V]; return N(L, n, o, b, Z, d, X) },
-            appendToScreen: function(q) { q = q.getView ? q.getView() : q, (M.fullscreenElement || M.mozFullScreenElement || M.webkitFullscreenElement || M.msFullscreenElement || M.body).appendChild(q) },
-            encodeString: function(f) { return k.Math.encodeBase64(f, D.encodeStringKey) },
+            createGradient: function(L, V, n, o, b, Z, d, X) {  var N = jc[V]; return N(L, n, o, b, Z, d, X) },
+            appendToScreen: function(q) {   q = q.getView ? q.getView() : q, (M.fullscreenElement || M.mozFullScreenElement || M.webkitFullscreenElement || M.msFullscreenElement || M.body).appendChild(q) },
+            encodeString: function(f) {  return k.Math.encodeBase64(f, D.encodeStringKey) },
             decodeString: function(s) { return k.Math.decodeBase64(s, D.encodeStringKey) },
             findView: function(v) {
                 var f = function(E, d) {
@@ -2869,7 +2889,7 @@
                 }
                 return D.convertURL ? D.convertURL(_, C) : _
             },
-            convertURL: function(F) { return F },
+            convertURL: function(F) {  return F },
             handleRefGraphLoaded: function() {},
             handleCompTypeLoaded: function() {},
             handleImageLoaded: function() {},
@@ -3058,6 +3078,7 @@
                     var F = qe.style;
                     D.baseZIndex != A && (F.zIndex = pr(D.baseZIndex) + 3 + ""), F.whiteSpace = "nowrap", F.color = D.toolTipLabelColor, F.background = D.toolTipBackground, F.font = D.toolTipLabelFont, F.padding = "5px", F.boxShadow = "0px 0px 3px " + D.toolTipShadowColor
                 }
+         
                 return qe
             },
             isToolTipShowing: function() { return qe && qe.parentNode ? !0 : ti && ti.parentNode ? !0 : !1 },
@@ -3075,6 +3096,7 @@
                 }
             },
             showToolTip: function(T, C, U) {
+                
                 if (!T || C == A) return Hd(), void 0;
                 D.getToolTipDiv();
                 var J, B;
@@ -3581,7 +3603,8 @@
                 var X = this.pen;
                 ($ !== d || J !== I || d !== X.x || I !== X.y) && (X.x = d, X.y = I, this.g.quadraticCurveTo($, J, d, I))
             }
-        }), eo = Se() + 1, co && y.console && eo && !0 && (y.navigator && y.navigator.userAgent.toLowerCase().indexOf("chrome") > -1 ? y.console.log.apply(console, ["Hightopo - Version：" + k.Default.getVersion() + " - %cTrial：http://hightopo.com/request.html", "color: #f00;"]) : y.console.log("Hightopo - Version：" + k.Default.getVersion() + " - Trial：http://hightopo.com/request.html"));
+        });
+    
         var Ik = A,
             ih = A,
             _d = D.checkLoadingCompType = function(H) { Ik && !H._72O && (ih || (ih = {}), ih[H._72O = Ji()] = H) },
@@ -4180,9 +4203,10 @@
                     return D
                 }
 
-                function p(h) { return en.charAt(h) }
+                function p(h) {  return en.charAt(h) }
 
                 function T(L, Z) {
+                    
                     var V = Fd[L.charCodeAt(Z)];
                     return V == A ? -1 : V
                 }
@@ -4428,6 +4452,7 @@
                 function gi(B) { return B._53O(this.e, this.n) }
 
                 function pq(J) {
+               
                     var g, R, F, $ = "",
                         c = 0;
                     for (g = 0; g < J.length && J.charAt(g) != Go; ++g) F = an.indexOf(J.charAt(g)), 0 > F || (0 == c ? ($ += p(F >> 2), R = 3 & F, c = 1) : 1 == c ? ($ += p(R << 2 | F >> 4), R = 15 & F, c = 2) : 2 == c ? ($ += p(R), $ += p(F >> 2), R = 3 & F, c = 3) : ($ += p(R << 2 | F >> 4), $ += p(15 & F), c = 0));
@@ -4487,6 +4512,7 @@
                 var Zk = 52;
                 $k.FV = B(2, Zk), $k.F1 = Zk - Mm, $k.F2 = 2 * Mm - Zk;
                 var Or, us, en = "0123456789abcdefghijklmnopqrstuvwxyz",
+
                     Fd = [],
                     ie = function(i) { return String.fromCharCode(i) };
                 for (Or = "0".charCodeAt(0), us = 0; 9 >= us; ++us) Fd[Or++] = us;
@@ -4956,6 +4982,7 @@
         }();
         var jq = function() {
                 function v(P, Q, T, U) {
+                     
                     var v = P ? P.path.slice(0) : [];
                     Q && v.push(Q), this.desc = T, this.name = Q, this.path = of(v), this.getter = ek(v), this.setter = Fk(v), this.isLeaf = U, this.parent = P, this.children = [], this.childMap = {}
                 }
@@ -7106,6 +7133,7 @@
         var Zg = kb.create(function(c, P, Y) { this.v0 = c, this.v1 = P, this.v2 = Y }, function(Z) { var H, V, r; return H = Xg.b2(Z, this.v0.x, this.v1.x, this.v2.x), V = Xg.b2(Z, this.v0.y, this.v1.y, this.v2.y), r = Xg.b2(Z, this.v0.z, this.v1.z, this.v2.z), new Pp(H, V, r) }),
             nb = kb.create(function(D, y, k, w) { this.v0 = D, this.v1 = y, this.v2 = k, this.v3 = w }, function(u) { var A, _, C; return A = Xg.b3(u, this.v0.x, this.v1.x, this.v2.x, this.v3.x), _ = Xg.b3(u, this.v0.y, this.v1.y, this.v2.y, this.v3.y), C = Xg.b3(u, this.v0.z, this.v1.z, this.v2.z, this.v3.z), new Pp(A, _, C) }),
             Uc = function(p, x, h, a, W, q, V, A) {
+                console.log(p, x, h, a, W, q, V, A);
                 Yd.call(this), a = a !== O ? a : .5, W = W !== O ? W : .5, A = A !== O ? A : 1, p = p || 8, q = q || 0, V = V || m;
                 var $, n, M = 1,
                     I = A / 2,
@@ -11243,6 +11271,7 @@
                     q = c._context,
                     i = k.Default.getInternal(),
                     l = D.devicePixelRatio;
+ 
                 (Y.width !== H || Y.height !== y) && i.setCanvas(Y, H, y, l), q.clearRect(0, 0, Y.width, Y.height);
                 var h = c._getValidSelection();
                 q.save(), q.scale(l, l), c._gridGuide._42(), c.invokeSubModuleInverse(s, !1, q, x, h), c._rectGuide._42(), c._hoverGuide._42(), q.restore()
@@ -11450,6 +11479,7 @@
                 P = e._position,
                 b = k.Default.getInternal(),
                 Q = e._scale;
+               
             return new b.Mat(e._64O, P.x, P.y, Q.x, Q.y)
         }, El.prototype.toGlobal = function(N) { return this.getMatrix().tf(N) }, El.prototype.getCorners = function() {
             var Q = this,
@@ -11550,6 +11580,7 @@
             var p, O, v, Y, o, C = Math.round(f / 2),
                 n = "" + C + " " + C + ",auto !important;",
                 G = 4;
+          
             p = Math.PI / 180 * t * J, $.clearRect(0, 0, f, f), $.save(), $.scale(f / 32, f / 32), $.translate(16, 15), $.rotate(p + Math.PI / 2), $.beginPath(), $.moveTo(-8, 0), $.lineTo(-8, G), $.lineTo(-8 + G, G), $.moveTo(8, 0), $.lineTo(8, G), $.lineTo(8 - G, G), $.moveTo(-8, G), $.quadraticCurveTo(0, -6, 8, G), $.restore(), $.lineCap = "round", $.lineJoin = "miter", $.strokeStyle = "white", $.lineWidth = 4, $.stroke(), $.strokeStyle = "black", $.lineWidth = 2, $.stroke(), O = JSON.stringify(N.toDataURL()), Y = "cursor:url(" + O + ")" + n, 1 !== R && (v = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="' + f + 'px" height="' + f + 'px"><image xlink:href=' + O + ' width="' + f + '" height="' + f + '"/></svg>', Y += "cursor:url(data:image/svg+xml;base64," + btoa(v) + ")" + n, Y += "cursor:-webkit-image-set(url(" + O + ")" + R + "x,url(" + O + ")1x)" + n), o = M.createElement("style"), o.textContent = "body." + X + " *, ." + X + "{" + Y + "}", M.head.appendChild(o)
         };
         var Aq = ie.Guide.Grid = function(d) {
@@ -15542,7 +15573,7 @@
         D.getModelTypeHandlers = function() { return Pn }, D.setModelTypeHandler = function(G, O) { Pn[G] = O }, D.getModelTypeHandler = function(u) { return Pn[u] }, D.handleModelLoaded = function() {}, D.handleUnfoundModel = function() {};
         var Rh = A,
             ms = A,
-            en = function(R) { Rh && !R._loadingModelView_ && (ms || (ms = {}), ms[R._loadingModelView_ = Ji()] = R) },
+            en = function(R) {  Rh && !R._loadingModelView_ && (ms || (ms = {}), ms[R._loadingModelView_ = Ji()] = R) },
             Oi = function(J, h) {
                 Rh || (Rh = {});
                 var X = Rh[J];
@@ -19936,7 +19967,7 @@
                 }
             }
         };
-        Ws.hBlurShader = "!!b~u!us<j*czv/utfp!qw!f.d!31!/q2p!t-<y/!twpbqs)z3jdofhw!!w>f!dw3V!ww!Vw<<*1/!2w!p-j1e/!1n!b-j1o/)2w!p,j!e1*/!3|!+!!hzm/`tQppqt.j!u-j1p/o2!!>.!!w1f/d35!)+q!pyt/^#!!q~s!fd<jntvjtp!o>!!isjphmipqD!hgbmspGb`um<h!!vo<j2g6p1s/n1!!t+b!n*q!m*f!sz3/Ew!Vjwn!b-hffv<mb!ww!b+s!z1j/o5h!!,w!fyd/3w!VwwV!w)<3d!fvwo!j-gfphsbnn!jg!m)pEb3uf!swvbumyvffu<!>,!!wnpvjte!!n<b9j2o:)1*/!1|!+!!w*f!d*5!!zt/vwnV!w>!!-wffvdm5b)w!!1+/!11!/*4<!,!!yt/vwnV!w,!>)!3udffywu!v-sffh3bEn)j!!j)nEb3hffs-v!uwyffdu3!)>!,w!Vnwv/ty!!.<!655/313!2+/!1w!b+m!v*f!-*!!wzV/ww/Vzw!!*-!f*v!m+b!w1!/+1!612/<3!!,t!vyn/!w,V>w!!u)f3ydufvws!f-3fEh)b!njjn!b)hEf3-f!swvfudy3f)u!!w>V,w!/nyv!t.!!4</214!6+2!/w1b!m+v!f*-!!*w!Vzw//wzV!w*!!-*f!v+m!b1w/!1+:!219/<2!!,t!vyn/!w,V>w!!u)f3ydufvws!f-3fEh)b!njjn!b)hEf3-f!swvfudy3f)u!!w>V,w!/nyv!t.!!3</414!7+2!/w1b!m+v!f*-!!*w!Vzw//wzV!w*!!-*y!/+w!V1w/!2)333d5f6w<!-!fthvbnn!j,!>)!Eu3ffysuvvusyff3uE!)>!,j!nnbvhtf!-!<w2f4d632)/!1w!V+w!/*y!!*.!!z2//w1V!w+!!-wfbvm", Ws.vBlurShader = "!!b~u!us<j*czv/utfp!qw!f.d!31!/q2p!t-<y/!twpbqs)z3jdofhw!!w>f!dw3V!ww!Vw<<*1/!2w!p-j1e/!1n!b-j1o/)2w!p,j!e1*/!3|!+!!hzm/`tQppqt.j!u-j1p/o2!!>.!!w1f/d35!)+q!pyt/^#!!q~s!fd<jntvjtp!o>!!isjphmipqD!hgbmspGb`um<h!!vo<j2g6p1s/n1!!t+b!n*q!m*f!sf3vEm!bjwn!b+h!f1</5!!w,b!szz/jwoVhw!!w-fyd/3w!VwwV!w)<3d!fvwo!j-gfphsbnn!jg!m)pEb3uf!swvbumyvffu<!>,!!wnpvjte!!n<b9j2o:)1*/!1|!+!!w*f!d*5!!ftvvmnb!w>!!+w!f1d/54)!!,1!/z1/!w*V<w!-!yt/vwnV!w,!>)!3udffywu!v-sffh3bEn)j!!j)nEb3hffs-v!uwyffdu3!)>!,w!Vnwv/ty!-!<w6V5w3/3z2!/.1!!5+/!1*!!+*!!wfbvmmvbfw!!*+!!*1!/+3!!1,/!1z6/2w<Vw!!t-vyn/!w,V>w!!u)f3ydufvws!f-3fEh)b!njjn!b)hEf3-f!swvfudy3f)u!!w>V,w!/nyv-t!!wV<w2/4z6!2./!14!/+1!!*+!!*w!bfmvvmfb!w*!!+*!!1+/!21!/,1!:z2/9w<Vw!!t-vyn/!w,V>w!!u)f3ydufvws!f-3fEh)b!njjn!b)hEf3-f!swvfudy3f)u!!w>V,w!/nyv-t!!wV<w4/4z7!2./!13!/+1!!*+!!*w!bzm/vwfV!w*!!-*y!/+w!V1w/!2)333d5f6w<!-!fthvbnn!j,!>)!Eu3ffysuvvusyff3uE!)>!,j!nnbvhtf!-!<w2f4d632)/!1w!V+w!/*y!-*!!wfVvwm/bzw!!.+!!21/", gp(D, { accordionViewExpandIcon: Fh(Fi), accordionViewCollapseIcon: Fh(Fi, !0), accordionViewLabelColor: Yr, accordionViewLabelFont: Zq, accordionViewTitleBackground: qk, accordionViewSelectBackground: sn, accordionViewSelectWidth: 3, accordionViewSeparatorColor: O, splitViewDividerSize: 1, splitViewDividerBackground: qk, splitViewDragOpacity: .5, splitViewToggleIcon: { width: 16, height: 16, comps: [{ type: Aj, rect: [2, 2, 12, 12], background: Fi }] }, propertyViewLabelColor: Yg, propertyViewLabelSelectColor: Yr, propertyViewLabelFont: Zq, propertyViewExpandIcon: Fh(wm), propertyViewCollapseIcon: Fh(wm, !0), propertyViewBackground: ol, propertyViewRowLineVisible: !0, propertyViewColumnLineVisible: !0, propertyViewRowLineColor: Am, propertyViewColumnLineColor: Am, propertyViewSelectBackground: sn, listViewLabelColor: Yg, listViewLabelSelectColor: Yr, listViewLabelFont: Zq, listViewRowLineVisible: !1, listViewRowLineColor: Am, listViewSelectBackground: sn, treeViewLabelColor: Yg, treeViewLabelSelectColor: Yr, treeViewLabelFont: Zq, treeViewExpandIcon: Fh(iq), treeViewCollapseIcon: Fh(iq, !0), treeViewRowLineVisible: !1, treeViewRowLineColor: Am, treeViewSelectBackground: sn, treeViewDoubleClickToToggle: !0, tableViewLabelColor: Yg, tableViewLabelSelectColor: Yr, tableViewLabelFont: Zq, tableViewRowLineVisible: !0, tableViewColumnLineVisible: !0, tableViewRowLineColor: Am, tableViewColumnLineColor: Am, tableViewSelectBackground: sn, treeTableViewLabelColor: Yg, treeTableViewLabelSelectColor: Yr, treeTableViewLabelFont: Zq, treeTableViewExpandIcon: Fh(iq), treeTableViewCollapseIcon: Fh(iq, !0), treeTableViewRowLineVisible: !0, treeTableViewColumnLineVisible: !0, treeTableViewRowLineColor: Am, treeTableViewColumnLineColor: Am, treeTableViewSelectBackground: sn, tableHeaderLabelColor: Yg, tableHeaderLabelFont: Zq, tableHeaderColumnLineVisible: !0, tableHeaderColumnLineColor: fg, tableHeaderBackground: ol, tableHeaderMoveBackground: sp, tableHeaderInsertColor: sn, tableHeaderSortDescIcon: Yh(wm, !0), tableHeaderSortAscIcon: Yh(wm), tabViewTabGap: 1, tabViewLabelColor: Yr, tabViewLabelFont: Zq, tabViewTabBackground: qk, tabViewSelectWidth: 3, tabViewSelectBackground: sn, tabViewMoveBackground: sp, tabViewInsertColor: sn, toolbarLabelColor: Yg, toolbarLabelSelectColor: Yr, toolbarLabelFont: Zq, toolbarBackground: ol, toolbarSelectBackground: sn, toolbarItemGap: 8, toolbarSeparatorColor: Cf }, !0);
+        Ws.hBlurShader = "!!b~u!us<j*czv/utfp!qw!f.d!31!/q2p!t-<y/!twpbqs)z3jdofhw!!w>f!dw3V!ww!Vw<<*1/!2w!p-j1e/!1n!b-j1o/)2w!p,j!e1*/!3|!+!!hzm/`tQppqt.j!u-j1p/o2!!>.!!w1f/d35!)+q!pyt/^#!!q~s!fd<jntvjtp!o>!!isjphmipqD!hgbmspGb`um<h!!vo<j2g6p1s/n1!!t+b!n*q!m*f!sz3/Ew!Vjwn!b-hffv<mb!ww!b+s!z1j/o5h!!,w!fyd/3w!VwwV!w)<3d!fvwo!j-gfphsbnn!jg!m)pEb3uf!swvbumyvffu<!>,!!wnpvjte!!n<b9j2o:)1*/!1|!+!!w*f!d*5!!zt/vwnV!w>!!-wffvdm5b)w!!1+/!11!/*4<!,!!yt/vwnV!w,!>)!3udffywu!v-sffh3bEn)j!!j)nEb3hffs-v!uwyffdu3!)>!,w!Vnwv/ty!!.<!655/313!2+/!1w!b+m!v*f!-*!!wzV/ww/Vzw!!*-!f*v!m+b!w1!/+1!612/<3!!,t!vyn/!w,V>w!!u)f3ydufvws!f-3fEh)b!njjn!b)hEf3-f!swvfudy3f)u!!w>V,w!/nyv!t.!!4</214!6+2!/w1b!m+v!f*-!!*w!Vzw//wzV!w*!!-*f!v+m!b1w/!1+:!219/<2!!,t!vyn/!w,V>w!!u)f3ydufvws!f-3fEh)b!njjn!b)hEf3-f!swvfudy3f)u!!w>V,w!/nyv!t.!!3</414!7+2!/w1b!m+v!f*-!!*w!Vzw//wzV!w*!!-*y!/+w!V1w/!2)333d5f6w<!-!fthvbnn!j,!>)!Eu3ffysuvvusyff3uE!)>!,j!nnbvhtf!-!<w2f4d632)/!1w!V+w!/*y!!*.!!z2//w1V!w+!!-wfbvm", Ws.vBlurShader = "!!b~u!us<j*czv/utfp!qw!f.d!31!/q2p!t-<y/!twpbqs)z3jdofhw!!w>f!dw3V!ww!Vw<<*1/!2w!p-j1e/!1n!b-j1o/)2w!p,j!e1*/!3|!+!!hzm/`tQppqt.j!u-j1p/o2!!>.!!w1f/d35!)+q!pyt/^#!!q~s!fd<jntvjtp!o>!!isjphmipqD!hgbmspGb`um<h!!vo<j2g6p1s/n1!!t+b!n*q!m*f!sf3vEm!bjwn!b+h!f1</5!!w,b!szz/jwoVhw!!w-fyd/3w!VwwV!w)<3d!fvwo!j-gfphsbnn!jg!m)pEb3uf!swvbumyvffu<!>,!!wnpvjte!!n<b9j2o:)1*/!1|!+!!w*f!d*5!!ftvvmnb!w>!!+w!f1d/54)!!,1!/z1/!w*V<w!-!yt/vwnV!w,!>)!3udffywu!v-sffh3bEn)j!!j)nEb3hffs-v!uwyffdu3!)>!,w!Vnwv/ty!-!<w6V5w3/3z2!/.1!!5+/!1*!!+*!!wfbvmmvbfw!!*+!!*1!/+3!!1,/!1z6/2w<Vw!!t-vyn/!w,V>w!!u)f3ydufvws!f-3fEh)b!njjn!b)hEf3-f!swvfudy3f)u!!w>V,w!/nyv-t!!wV<w2/4z6!2./!14!/+1!!*+!!*w!bfmvvmfb!w*!!+*!!1+/!21!/,1!:z2/9w<Vw!!t-vyn/!w,V>w!!u)f3ydufvws!f-3fEh)b!njjn!b)hEf3-f!swvfudy3f)u!!w>V,w!/nyv-t!!wV<w4/4z7!2./!13!/+1!!*+!!*w!bzm/vwfV!w*!!-*y!/+w!V1w/!2)333d5f6w<!-!fthvbnn!j,!>)!Eu3ffysuvvusyff3uE!)>!,j!nnbvhtf!-!<w2f4d632)/!1w!V+w!/*y!-*!!wfVvwm/bzw!!.+!!21/", gp(D, { accordionViewExpandIcon: Fh(Fi), accordionViewCollapseIcon: Fh(Fi, !0), accordionViewLabelColor: Yr, accordionViewLabelFont: Zq, accordionViewTitleBackground: qk, accordionViewSelectBackground: sn, accordionViewSelectWidth: 3, accordionViewSeparatorColor: O, splitViewDividerSize: 1, splitViewDividerBackground: qk, splitViewDragOpacity: .5, splitViewToggleIcon: { width: 16, height: 16, comps: [{ type: Aj, rect: [2, 2, 12, 12], background: Fi }] }, propertyViewLabelColor: Yg, propertyViewLabelSelectColor: Yr, propertyViewLabelFont: Zq, propertyViewExpandIcon: Fh(wm), propertyViewCollapseIcon: Fh(wm, !0), propertyViewBackground: ol, propertyViewRowLineVisible: !0, propertyViewColumnLineVisible: !0, propertyViewRowLineColor: Am, propertyViewColumnLineColor: Am, propertyViewSelectBackground: sn, listViewLabelColor: Yg, listViewLabelSelectColor: Yr, listViewLabelFont: Zq, listViewRowLineVisible: !1, listViewRowLineColor: Am, listViewSelectBackground: sn, treeViewLabelColor: Yg, treeViewLabelSelectColor: Yr, treeViewLabelFont: Zq, treeViewExpandIcon: Fh(iq), treeViewCollapseIcon: Fh(iq, !0), treeViewRowLineVisible: !1, treeViewRowLineColor: Am, treeViewSelectBackground: sn, treeViewDoubleClickToToggle: !0, tableViewLabelColor: Yg, tableViewLabelSelectColor: Yr, tableViewLabelFont: Zq, tableViewRowLineVisible: !0, tableViewColumnLineVisible: !0, tableViewRowLineColor: Am, tableViewColumnLineColor: Am, tableViewSelectBackground: sn, treeTableViewLabelColor: Yg, treeTableViewLabelSelectColor: Yr, treeTableViewLabelFont: Zq, treeTableViewExpandIcon: Fh(iq), treeTableViewCollapseIcon: Fh(iq, !0), treeTableViewRowLineVisible: !0, treeTableViewColumnLineVisible: !0, treeTableViewRowLineColor: Am, treeTableViewColumnLineColor: Am, treeTableViewSelectBackground: sn, tableHeaderLabelColor: Yg, tableHeaderLabelFont: Zq, tableHeaderColumnLineVisible: !0, tableHeaderColumnLineColor: fg, tableHeaderBackground: ol, tableHeaderMoveBackground: sp, tableHeaderInsertColor: sn, tableHeaderSortDescIcon: Yh(wm, !0), tableHeaderSortAscIcon: Yh(wm), tabViewTabGap: 1, tabViewLabelColor: Yr, tabViewLabelFont: Zq, tabViewTabBackground: qk, tabViewSelectWidth: 3, tabViewSelectBackground: sn, tabViewMoveBackground: sp, tabViewInsertColor: sn, toolbarLabelColor: 'Yg', toolbarLabelSelectColor: Yr, toolbarLabelFont: Zq, toolbarBackground: "#fff", toolbarSelectBackground: sn, toolbarItemGap: 8, toolbarSeparatorColor: Cf }, !0);
         var Xs = { translateX: 1, sortColumn: 1 },
             Ys = { sortable: 1, sortOrder: 1, sortFunc: 1 },
             Zs = { focusData: 1 },
@@ -20243,11 +20274,21 @@
                 (C === z._focusData && V || v && !V) && re(B, Y, H, y, p, z.getSelectBackground(C))
             }, X.drawData = function(R, v, f) {
                 var e = this,
-                    S = e._rowHeight,
-                    m = S * f,
+                    S ,
+                    m,
                     I = e._29I,
                     a = I.x,
                     N = I.width;
+                    if (v._icon) {
+                        // 右侧列表图标绘制
+                        e._rowHeight = 40
+                        S = e._rowHeight
+                        m = S * f
+                    } else {
+                        // 左侧列表图标绘制
+                        S = e._rowHeight
+                        m = S * f
+                    }
                 R.save(), R.beginPath(), R.rect(a, m, N, S), R.clip(), e._87o(e.drawRow(R, v, e.isSelected(v), a, m, N, S), f, a, m, N, S), R.restore(), e._rowLineVisible && re(R, a, m + S - 1, N, 1, e._rowLineColor)
             }, X._12I = function(n) {
                 var s = this,
@@ -20350,6 +20391,9 @@
             }
         }, Xp._14Q = function(c) {
             c.getIcon = function(l) { return l.getIcon() }, c.getIconWidth = function(L) { return this.getIcon(L) ? this._indent : 0 }, c.drawIcon = function(D, F, j, s, M, S) {
+                if (j == 0) {
+               
+                }
                 if (M) {
                     var X = this,
                         n = X.getBodyColor(F),
@@ -20358,7 +20402,17 @@
                 }
             }, c.drawLabel = function(S, V, U, c, e) {
                 var r = this;
-                hg(S, r.getLabel(V), r.getLabelFont(V), r.getLabelColor(V), U, c, 0, e)
+                 
+                if (r._expandMap == undefined) {
+                    let h = '高度:' + V._attrObject.uHeight + 'u'
+                    
+                    // console.log(S, r.getLabel(V), r.getLabelFont(L), r.getLabelColor(L), U, c, 0, 30);
+                    hg(S, r.getLabel(V), r.getLabelFont(L), "#fff", U, c, 0, 30)
+                    hg(S, h, r.getLabelFont(L), '#f00', U, c, 0, 55)
+                } else {
+                    hg(S, r.getLabel(V), r.getLabelFont(L), "#fff", U, c, 0, e)
+                }
+                // hg(S, r.getLabel(V), r.getLabelFont(V), r.getLabelColor(V), U, c, 0, e)
             }
         }, Xp._50o = function(t) {
             t._98I = function() {
@@ -20562,6 +20616,18 @@
                 g = K._61O = Sg(),
                 o = e.style,
                 N = g.style;
+                v.className = '_dividerDiv'
+            if (F._expandMap == undefined) {
+
+                F._view.className = 'centerView'
+            } else {
+                F._view.className = 'leftView'
+            }
+            if (k != null) {
+                k._view.className = 'rightView'
+               
+            }
+          
             K._view = oq(1, K), Ml(K._view, v), o.msTouchAction = Kf, o.pointerEvents = Kf, o.cursor = Kj, N.msTouchAction = Kf, N.pointerEvents = Kf, N.cursor = Kj, F && K.setLeftView(F), k && K.setRightView(k), Y && K.setOrientation(Y), i != A && K.setPosition(i), K.setStatus(ul), new jt(K)
         }, ft("SplitView", n, {
             ms_v: 1,
@@ -20603,6 +20669,7 @@
             },
             getRightView: function() { return this._rightView },
             setRightView: function(n) {
+            
                 var o = this,
                     H = o._rightView,
                     z = o._view;
@@ -20670,6 +20737,7 @@
             ms_listener: 1,
             getView: function() { return this.sv.getView() },
             handle_touchstart: function(D) {
+                return
                 var K = this,
                     r = K.sv,
                     E = r._dividerDiv,
@@ -21337,9 +21405,11 @@
             drawRow: function(O, U, $, n, u, h, c) {
                 var S = this,
                     H = 0,
-                    D = S._indent,
-                    E = S.getIconWidth(U);
-                S.drawRowBackground(O, U, $, n, u, h, c), S._checkMode && (Gj(O, Jc(S.getCheckIcon(U)), H + D / 2, u + c / 2, U, S), H += D), S.drawIcon(O, U, H, u, E, c), S.drawLabel(O, U, H + E, u, c)
+                    D=80,
+                    E=80;
+                    // D = S._indent,
+                    // E = S.getIconWidth(U);
+                S.drawRowBackground(O, U, $, n, u, h, c), S._checkMode && (Gj(O, Jc(S.getCheckIcon(U)), H + D / 2, u + c / 2, U, S), H += D), S.drawIcon(O, U, H, u, E, c), S.drawLabel(O, U, H + 80, u, c)
             }
         });
         var mt = function(k) { this.list = k, this.addListeners() };
@@ -21837,6 +21907,7 @@
                 q._29o = q.resizing = q.x = q.lx = q.w = A
             }
         }), et.TablePane = function(y) { this.init(new ot(y)) }, ft("TablePane", n, { ms_v: 1, _44o: 1 }), et.TreeTablePane = function($) { this.init(new qt($)) }, ft("TreeTablePane", n, { ms_v: 1, _44o: 1 }), et.Toolbar = function(S) {
+            console.log(this);
             var u = this,
                 f = u._view = oq(1, u),
                 F = f.style;
@@ -22032,7 +22103,7 @@
             setLeftView: function(x, H) { this._12o("leftView", x), H != A && this.setLeftWidth(H) },
             getRightView: function() { return this._rightView },
             setRightView: function(k, x) { this._12o("rightView", k), x != A && this.setRightWidth(x) },
-            getTopView: function() { return this._topView },
+            getTopView: function() { console.log(this._topView); return this._topView },
             setTopView: function(p, s) { this._12o("topView", p), s != A && this.setTopHeight(s) },
             getBottomView: function() { return this._bottomView },
             setBottomView: function(T, w) { this._12o("bottomView", T), w != A && this.setBottomHeight(w) },
@@ -22047,6 +22118,7 @@
             },
             onPropertyChanged: function() { this.iv() },
             validateImpl: function() {
+              
                 var N = this,
                     r = N._topView,
                     g = N._bottomView,
@@ -22063,6 +22135,7 @@
                     s = 0,
                     h = 0,
                     E = 0;
+                 
                 r && (R = N._topHeight == A ? rj(r) : N._topHeight, U = R), g && (s = N._bottomHeight == A ? rj(g) : N._bottomHeight, C = j - s), S && (h = N._leftWidth == A ? qo(S) : N._leftWidth, i = h), b && (E = N._rightWidth == A ? qo(b) : N._rightWidth, O = B - E);
                 var I = K(0, O - i),
                     z = K(0, C - U);
